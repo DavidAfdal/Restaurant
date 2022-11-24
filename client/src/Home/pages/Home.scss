@@ -1,0 +1,71 @@
+.wrapper {
+  padding-top: 30px;
+  padding-bottom: 100px;
+  background: url(../assets/bgHome.png) rgba(13, 13, 13, 0.95);
+  background-size: cover;
+  background-blend-mode: multiply;
+  z-index: 10;
+  overflow: hidden;
+}
+.Img_wrapper {
+  position: relative;
+  max-width: 80%;
+  .img_first {
+    position: relative;
+    width: 100%;
+    height: auto;
+    z-index: 5;
+  }
+  .img_second {
+    position: absolute;
+    width: 65%;
+    height: auto;
+    right: -35%;
+    z-index: 1;
+  }
+}
+
+.list_bestfood {
+  list-style: url(../assets/klik.png);
+  padding-left: 20px;
+  margin: 0;
+  font-size: 14px;
+  li {
+    margin: 5px 0;
+  }
+}
+
+.bg_about {
+  background: url(../assets/bgAbout.png) rgba(13, 13, 13, 0.95);
+  background-size: cover;
+  background-blend-mode: multiply;
+}
+
+.slick-dots li button:before {
+  opacity: 0.75;
+  color: #ff9f0d !important;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #ff9f0d !important;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  font-size: 40px !important;
+  line-height: 1;
+  color: #ff9f0d !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.slick-prev {
+  left: -45px !important;
+}
+
+.bg_Creative {
+  background: url(../assets/bgCreative.png) rgba(82, 82, 82, 0.95);
+  background-blend-mode: multiply;
+  background-size: cover;
+  margin-top: 100px;
+}

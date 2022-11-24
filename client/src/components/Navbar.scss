@@ -1,0 +1,32 @@
+.nav_list {
+  margin-right: 4px;
+  list-style: none;
+  .nav_link {
+    text-decoration: none;
+    color: #fff;
+    &:hover {
+      color: #ff9f0d;
+    }
+  }
+}
+
+.MuiMenu-list {
+  background-color: #0d0d0d;
+}
+
+.nav_list_drawer {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: 10px;
+  margin: 0;
+  .nav_link {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.75rem;
+
+    &:hover {
+      color: #ff9f0d;
+    }
+  }
+}
