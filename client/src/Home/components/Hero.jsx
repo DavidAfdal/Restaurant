@@ -9,7 +9,7 @@ const Hero = () => {
   };
   return (
     <div className="wrapper">
-      <Container maxWidth="lg" sx={{ pt: "30px" }}>
+      <Container maxWidth="lg" sx={{ pt: "50px" }}>
         <Grid container rowSpacing={{ xs: 4, lg: 0 }} columnSpacing={{ xs: 0, lg: 4 }} sx={{ alignItems: "center" }}>
           <Grid item lg={6} sx={{ display: "flex", flexDirection: "column", gap: "25px" }}>
             <Typography
