@@ -65,11 +65,11 @@ const getCategory = async (req, res, next) => {
     try {
         console.log('masuk')
         const getCategory = await Food.find()
-        let category = []
+        let newcategory = []
         getCategory.forEach(iter => {
             let pace = iter.category
-            if (!category.includes(pace)) {
-                category.push(pace)
+            if (!newcategory.includes(pace)) {
+                newcategory.push(pace)
             }
         })
         console.log(category)
