@@ -61,5 +61,21 @@ const getFoodbyId = async (req, res, next) => {
     }
 }
 
+const getCategory = async (req, res, next) => {
+    try {
+        console.log('masuk')
+        const getCategory = await Food.find()
+        let category = []
+        getCategory.forEach(iter => {
+            let pace = iter.category
+            if (!category.includes(pace)) {
+                category.push(pace)
+            }
+        })
+        console.log(category)
 
-module.exports = { createFood, filterFood, getFoodbyId }
+    } catch (err) {
+        next(err)
+    }
+}
+module.exports = { createFood, filterFood, getFoodbyId, getCategory }
