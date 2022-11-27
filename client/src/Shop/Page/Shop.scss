@@ -1,5 +1,15 @@
-.bg_shop {
-  background-image: url(../../Shared/background.png);
-  background-size: cover;
-  background-position: center 100%;
+.select_item {
+  background-color: #fff !important;
+}
+
+.MuiPagination-ul {
+  .css-19xm0h7-MuiButtonBase-root-MuiPaginationItem-root {
+    color: #ff9f0d !important;
+    border: 2px solid #f2f2f2 !important;
+  }
+  .Mui-selected {
+    background-color: #ff9f0d !important;
+    color: #fff !important;
+    border: none !important;
+  }
 }

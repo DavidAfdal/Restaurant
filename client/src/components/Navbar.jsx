@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -24,6 +24,7 @@ const pages = ["Home", "Blogs", "Pages", "Shop", "About", "Contact"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Navbar = () => {
+  const { pathname } = useLocation();
   const [anchorElNav, setAnchorElNav] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [path, setPath] = useState("");
@@ -94,7 +95,7 @@ const Navbar = () => {
               {pages.map((page) => (
                 <ul key={page} className="nav_list">
                   <li>
-                    <Link to={page !== "Home" ? `/${page}` : "/"} onClick={() => setPath(page)} className="nav_link">
+                    <Link to={page !== "Home" ? `/${page}` : "/"} state={{ prevPath: pathname }} onClick={() => setPath(page)} className="nav_link">
                       {page}
                     </Link>
                   </li>
@@ -121,7 +122,7 @@ const Navbar = () => {
                 </IconButton>
               </Tooltip>
               <Menu
-                sx={{ mt: "45px" }}
+                sx={{ mt: "45px", "& .MuiMenu-list": { backgroundColor: "#0d0d0d !important" } }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
