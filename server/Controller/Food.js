@@ -49,18 +49,6 @@ const filterFood = async (req, res, next) => {
     }
 }
 
-const getFoodbyId = async (req, res, next) => {
-    try {
-        const getData = await Food.findById(req.params.id)
-        res.status(200).json({
-            message: 'Succes',
-            data: getData
-        })
-    } catch (err) {
-        next(err)
-    }
-}
-
 const getCategory = async (req, res, next) => {
     try {
         console.log('masuk')
@@ -78,4 +66,17 @@ const getCategory = async (req, res, next) => {
         next(err)
     }
 }
+const getFoodbyId = async (req, res, next) => {
+    try {
+        const getData = await Food.findById(req.params.id)
+        res.status(200).json({
+            message: 'Succes',
+            data: getData
+        })
+    } catch (err) {
+        next(err)
+    }
+}
+
+
 module.exports = { createFood, filterFood, getFoodbyId, getCategory }
