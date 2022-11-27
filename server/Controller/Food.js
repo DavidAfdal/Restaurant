@@ -55,12 +55,17 @@ const getCategory = async (req, res, next) => {
         const getCategory = await Food.find()
         let newcategory = []
         getCategory.forEach(iter => {
-            let pace = iter.category
-            if (!newcategory.includes(pace)) {
-                newcategory.push(pace)
-            }
+            iter.category.forEach(item => {
+                if (!newcategory.includes(item)) {
+                    newcategory.push(item)
+                }
+            })
         })
-        console.log(category)
+
+        res.status(200).json({
+            message: 'succes',
+            data: newcategory
+        })
 
     } catch (err) {
         next(err)
