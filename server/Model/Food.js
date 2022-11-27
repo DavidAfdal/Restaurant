@@ -19,13 +19,13 @@ const FoodSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    image: {
-        type: [string],
-        required: true
-    },
-    photos: {
-        type: [String],
-    },
+    // image: {
+    //     type: [String],
+    //     required: true
+    // },
+    // photos: {
+    //     type: [String],
+    // },
     category: {
         type: [String],
         default: false
@@ -33,7 +33,10 @@ const FoodSchema = new mongoose.Schema({
     review: {
         type: [String],
         default: false
+    },
+    createdAt: {
+
     }
-})
+}, { timestamps: true })
 
 module.exports = mongoose.model("Food", FoodSchema)

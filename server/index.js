@@ -1,6 +1,11 @@
 const express = require("express")
 const dotenv = require("dotenv")
 const mongoose = require("mongoose")
+
+
+const foodRouter = require('./routes/food')
+
+
 const app = express()
 dotenv.config()
 
@@ -15,8 +20,9 @@ const connect = async () => {
 mongoose.connection.on("disconnected", () => {
     console.log("MongoDB is disconnected")
 })
-app.use(express.json())
 
+app.use(express.json())
+app.use('/food',foodRouter)
 
 
 app.use((err, req, res, next) => {
@@ -28,11 +34,6 @@ app.use((err, req, res, next) => {
         message: errorMessage,
         stack: err.stack
     })
-})
-
-
-app.get("/", (req, res) => {
-    res.send("hello world")
 })
 
 
