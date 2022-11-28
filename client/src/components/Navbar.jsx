@@ -169,7 +169,7 @@ const Navbar = () => {
         <ul className="nav_list_drawer">
           {pages.map((page) => (
             <li key={page} style={{ marginBottom: "10px" }}>
-              <Link to={page !== "Home" ? `/${page}` : "/"} className="nav_link">
+              <Link to={page !== "Home" ? `/${page}` : "/"} state={{ prevPath: pathname }} className="nav_link">
                 {page}
               </Link>
             </li>
