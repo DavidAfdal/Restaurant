@@ -12,15 +12,10 @@ const FoodSchema = new mongoose.Schema({
     },
     rating: {
         type: Number,
-        min: 0,
-        max: 5
     },
     desc: {
         type: String,
         required: true
-    },
-    photos: {
-        type: [String],
     },
     category: {
         type: [String],
@@ -30,9 +25,6 @@ const FoodSchema = new mongoose.Schema({
         type: [String],
         default: false
     },
-    createdAt: {
-
-    }
 }, { timestamps: true })
 
 module.exports = mongoose.model("Food", FoodSchema)
