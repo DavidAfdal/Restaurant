@@ -1,6 +1,7 @@
 const express = require("express")
 const dotenv = require("dotenv")
 const mongoose = require("mongoose")
+const bodyParser = require('body-parser')
 
 
 const foodRouter = require('./routes/food')
@@ -21,8 +22,16 @@ mongoose.connection.on("disconnected", () => {
     console.log("MongoDB is disconnected")
 })
 
-app.use(express.json())
-app.use('/food',foodRouter)
+
+
+
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+app.use('/food', foodRouter)
 
 
 app.use((err, req, res, next) => {

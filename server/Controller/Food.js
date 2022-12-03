@@ -46,16 +46,20 @@ const filterFood = async (req, res, next) => {
 
 const getCategory = async (req, res, next) => {
   try {
+    console.log("masuk");
     const getCategory = await Food.find();
     let newcategory = [];
-    getCategory.map((iter) => {
-      iter.category.map((item) => {
+    getCategory.forEach((iter) => {
+      iter.category.forEach((item) => {
         if (!newcategory.includes(item)) {
           newcategory.push(item);
         }
       });
     });
-    res.status(200).json({ data: newcategory });
+    res.status(200).json({
+      message: "Succes",
+      data: newcategory,
+    });
   } catch (err) {
     next(err);
   }
