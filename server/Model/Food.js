@@ -34,9 +34,6 @@ const FoodSchema = new mongoose.Schema({
         type: [String],
         default: false
     },
-    createdAt: {
-
-    }
 }, { timestamps: true })
 
 module.exports = mongoose.model("Food", FoodSchema)

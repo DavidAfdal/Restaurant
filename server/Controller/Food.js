@@ -48,8 +48,8 @@ const getCategory = async (req, res, next) => {
   try {
     const getCategory = await Food.find();
     let newcategory = [];
-    getCategory.filter((iter) => {
-      iter.category.filter((item) => {
+    getCategory.map((iter) => {
+      iter.category.map((item) => {
         if (!newcategory.includes(item)) {
           newcategory.push(item);
         }
