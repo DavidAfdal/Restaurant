@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -24,6 +24,7 @@ const pages = ["Home", "Blogs", "Pages", "Shop", "About", "Contact"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const [anchorElNav, setAnchorElNav] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -44,6 +45,10 @@ const Navbar = () => {
     setAnchorElUser(null);
   };
 
+  const handleCart = () => {
+    navigate("/Cart", { state: { prevPath: pathname } });
+  };
+
   return (
     <div>
       <AppBar position="relative" sx={{ backgroundColor: "#0D0D0D" }} style={{ zIndex: 100 }} elevation={path === "Home" ? 0 : 12}>
@@ -54,6 +59,7 @@ const Navbar = () => {
                 <MenuIcon />
               </IconButton>
             </Box>
+
             <Typography
               variant="h6"
               noWrap
@@ -61,27 +67,9 @@ const Navbar = () => {
               href="/"
               sx={{
                 mr: 2,
-                display: { xs: "none", md: "flex" },
+                display: { xs: "flex", md: "flex" },
                 fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              Food<span style={{ color: "#FF9F0D" }}>tuck</span>
-            </Typography>
-
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href=""
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
+                flexGrow: { xs: 1, md: 0 },
                 fontWeight: 700,
                 letterSpacing: ".3rem",
                 color: "inherit",
@@ -95,7 +83,7 @@ const Navbar = () => {
               {pages.map((page) => (
                 <ul key={page} className="nav_list">
                   <li>
-                    <Link to={page !== "Home" ? `/${page}` : "/"} state={{ prevPath: pathname }} onClick={() => setPath(page)} className="nav_link">
+                    <Link to={page !== "Home" ? `/${page}` : "/"} state={{ prevPath: pathname }} className="nav_link">
                       {page}
                     </Link>
                   </li>
@@ -115,12 +103,13 @@ const Navbar = () => {
                 </IconButton>
               </Tooltip>
               <Tooltip title="Cart">
-                <IconButton sx={{ mr: 2 }}>
+                <IconButton sx={{ mr: 2 }} onClick={handleCart}>
                   <Badge badgeContent={4} color="secondary" sx={{ "& .MuiBadge-badge": { backgroundColor: "#FF9F0D" }, color: "#fff" }}>
                     <ShoppingCartOutlinedIcon sx={{ color: "#fff" }} />
                   </Badge>
                 </IconButton>
               </Tooltip>
+
               <Menu
                 sx={{ mt: "45px", "& .MuiMenu-list": { backgroundColor: "#0d0d0d !important" } }}
                 id="menu-appbar"
@@ -147,6 +136,7 @@ const Navbar = () => {
           </Toolbar>
         </Container>
       </AppBar>
+
       <Drawer anchor="left" open={anchorElNav} onClose={handleCloseNavMenu} sx={{ "& .MuiDrawer-paper": { width: { xs: "50%", lg: "100%" }, backgroundColor: "#0d0d0d" }, display: { xs: "flex", md: "none" } }}>
         <Typography
           variant="h5"
