@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 
 
 const foodRouter = require('./routes/food')
-
+const reviewRouter = require('./routes/review')
 
 const app = express()
 dotenv.config()
@@ -22,16 +22,14 @@ mongoose.connection.on("disconnected", () => {
     console.log("MongoDB is disconnected")
 })
 
-
-
-
-
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
-
 // parse application/json
 app.use(bodyParser.json())
+
+//router
 app.use('/food', foodRouter)
+app.use('/review', reviewRouter)
 
 
 app.use((err, req, res, next) => {

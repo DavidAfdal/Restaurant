@@ -19,9 +19,10 @@ const FoodSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    photos: {
-        type: [String],
-    },
+    photos: [{
+        _id: { type: String },
+        url: { type: String },
+    }],
     category: {
         type: [String],
         default: false
@@ -30,7 +31,7 @@ const FoodSchema = new mongoose.Schema({
         type: [String],
         default: false
     },
-   
+
 }, { timestamps: true })
 
 module.exports = mongoose.model("Food", FoodSchema)
