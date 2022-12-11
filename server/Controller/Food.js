@@ -1,16 +1,25 @@
 const Food = require("../Model/Food");
-
+const cloudinary = require('../util/cloudinary')
 const createFood = async (req, res, next) => {
     try {
+        let images = [...req.files] 
+        let uploadImage = []
+        console.log(images)
+        for (const image of images) {
+            const result = await cloudinary.uploader.upload(image)
+            uploadImage.push(result.url)
+        }
+       
         const existFood = await Food.find({ name: req.body.name });
         if (existFood.length === 0 || existFood == []) {
+
             const newFood = new Food(req.body);
             try {
-                const saveFood = await newFood.save();
-                res.status(200).json({
-                    message: "Succes",
-                    data: saveFood,
-                });
+                // const saveFood = await newFood.save();
+                // res.status(200).json({
+                //     message: "Succes",
+                //     data: saveFood,
+                // });
             } catch (err) {
                 next(err);
             }
