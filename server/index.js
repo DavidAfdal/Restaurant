@@ -3,9 +3,11 @@ const dotenv = require("dotenv")
 const mongoose = require("mongoose")
 const bodyParser = require('body-parser')
 
-
+const userRouter = require('./routes/user')
+const cartRouter = require('./routes/cart')
 const foodRouter = require('./routes/food')
 const reviewRouter = require('./routes/review')
+
 
 const app = express()
 dotenv.config()
@@ -30,7 +32,8 @@ app.use(bodyParser.json())
 //router
 app.use('/food', foodRouter)
 app.use('/review', reviewRouter)
-
+app.use('/user', userRouter)
+app.use('/cart', cartRouter)
 
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500
