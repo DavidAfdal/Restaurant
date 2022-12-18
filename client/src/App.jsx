@@ -15,15 +15,12 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-<<<<<<< HEAD
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/menu/:menuId" element={<Produk />} />
-=======
         <Route path="/shop" element={<Shop />} />
->>>>>>> 4b1209f7d14ae0653a3f54768f9d0bb0dc6ac03b
         <Route path="*" element={<Page404 />} />
       </Routes>
     </BrowserRouter>
