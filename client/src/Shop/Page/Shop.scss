@@ -13,3 +13,19 @@
     border: none !important;
   }
 }
+
+.recomend_Slider {
+  .slick-slide {
+    width: 270px;
+    margin: 0 10px;
+  }
+}
+
+@media (max-width: 767px) {
+  .recomend_Slider {
+    .slick-slide {
+      width: 100px;
+      margin: 0 10px;
+    }
+  }
+}

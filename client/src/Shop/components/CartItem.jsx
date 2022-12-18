@@ -124,7 +124,7 @@ const CartItem = () => {
       </TableContainer>
 
       <Grid container spacing={4} sx={{ mt: 4 }}>
-        <Grid item lg={6}>
+        <Grid item lg={6} xs={12}>
           <Typography variant="h4" sx={{ color: "#232323", mb: 2 }}>
             Coupon Code
           </Typography>
@@ -135,7 +135,7 @@ const CartItem = () => {
               </Typography>
               <FormControl sx={{ display: "flex", mt: 2 }} variant="outlined">
                 <ButtonGroup>
-                  <OutlinedInput id="outlined-adornment-weight" sx={{ width: "100%", borderRadius: "4px 0 0 4px" }} />
+                  <OutlinedInput id="outlined-adornment-weight" sx={{ width: "100%", borderRadius: "4px 0 0 4px" }} placeholder="Enter Here code" />
                   <Button variant="contained" sx={{ width: "20%", borderRadius: "0 4px 4px 0", bgcolor: "#ff9f0d", "&:hover": { bgcolor: "#ff9f0d", boxShadow: "none" }, boxShadow: "none" }}>
                     Apply
                   </Button>
@@ -144,7 +144,7 @@ const CartItem = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item lg={6}>
+        <Grid item lg={6} xs={12}>
           <Stack spacing={2}>
             <Typography variant="h4" sx={{ color: "#232323" }}>
               Total Bil
@@ -180,8 +180,8 @@ const CartItem = () => {
                 </Box>
               </CardContent>
             </Card>
-            <Button variant="contained" sx={{ width: "100%", borderRadius: "0 4px 4px 0", bgcolor: "#ff9f0d", "&:hover": { bgcolor: "#ff9f0d", boxShadow: "none" }, boxShadow: "none" }}>
-              Apply
+            <Button variant="contained" sx={{ width: "100%", height: "100%", borderRadius: "0 4px 4px 0", bgcolor: "#ff9f0d", "&:hover": { bgcolor: "#ff9f0d", boxShadow: "none" }, boxShadow: "none" }}>
+              Proceed to Checkout
             </Button>
           </Stack>
         </Grid>

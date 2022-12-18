@@ -21,7 +21,7 @@ import "./Navbar.scss";
 import { Badge } from "@mui/material";
 
 const pages = ["Home", "Blogs", "Pages", "Shop", "About", "Contact"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Account", "Dashboard", "Logout", "Register", "Login"];
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -128,7 +128,9 @@ const Navbar = () => {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu} sx={{ backgroundColor: "#0D0D0D", color: "#fff", "&:hover": { color: "#FF9F0D" } }}>
-                    <Typography>{setting}</Typography>
+                    <Link to={setting} state={{ prevPath: pathname }} className="nav_Auth">
+                      {setting}
+                    </Link>
                   </MenuItem>
                 ))}
               </Menu>
