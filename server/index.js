@@ -3,8 +3,10 @@ const dotenv = require("dotenv")
 const mongoose = require("mongoose")
 const bodyParser = require('body-parser')
 
-
+const userRouter = require('./routes/user')
+const cartRouter = require('./routes/cart')
 const foodRouter = require('./routes/food')
+const reviewRouter = require('./routes/review')
 
 
 const app = express()
@@ -22,17 +24,16 @@ mongoose.connection.on("disconnected", () => {
     console.log("MongoDB is disconnected")
 })
 
-
-
-
-
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
-
 // parse application/json
 app.use(bodyParser.json())
-app.use('/food', foodRouter)
 
+//router
+app.use('/food', foodRouter)
+app.use('/review', reviewRouter)
+app.use('/user', userRouter)
+app.use('/cart', cartRouter)
 
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500

@@ -1,10 +1,29 @@
 const Food = require("../Model/Food");
+const cloudinary = require('../util/cloudinary')
 
 const createFood = async (req, res, next) => {
+  let images = [...req.files]
+  let uploadImage = []
   try {
     const existFood = await Food.find({ name: req.body.name });
     if (existFood.length === 0 || existFood == []) {
-      const newFood = new Food(req.body);
+      for (let i = 0; i < images.length; i++) {
+        const result = await cloudinary.uploader.upload(images[i].path)
+        uploadImage.push({
+          _id: result.public_id,
+          url: result.url
+        })
+      } 
+      const newFood = new Food({
+        name: req.body.name,
+        price: req.body.price,
+        rating: req.body.rating,
+        desc: req.body.desc,
+        category: req.body.category,
+        review: req.body.review,
+        photos: uploadImage,
+      })
+      console.log(newFood)
       try {
         const saveFood = await newFood.save();
         res.status(200).json({
@@ -22,6 +41,7 @@ const createFood = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+
 };
 
 const filterFood = async (req, res, next) => {
@@ -46,7 +66,6 @@ const filterFood = async (req, res, next) => {
 
 const getCategory = async (req, res, next) => {
   try {
-    console.log("masuk");
     const getCategory = await Food.find();
     let newcategory = [];
     getCategory.forEach((iter) => {
