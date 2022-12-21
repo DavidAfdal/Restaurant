@@ -4,6 +4,14 @@ import item3 from "./assets/Item3.png";
 import item4 from "./assets/Item4.png";
 import item5 from "./assets/Item5.png";
 import item6 from "./assets/Item6.png";
+import chef1 from "../Chef/Assets/chf1.png";
+import chef2 from "../Chef/Assets/chf2.png";
+import chef3 from "../Chef/Assets/chf3.png";
+import chef4 from "../Chef/Assets/chf4.png";
+import chef5 from "../Chef/Assets/chf5.png";
+import chef6 from "../Chef/Assets/chf6.png";
+import chef7 from "../Chef/Assets/chf7.png";
+import chef8 from "../Chef/Assets/chf8.png";
 
 export const ItemMenu = [
   {
@@ -125,5 +133,56 @@ export const ItemMenu = [
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque diam pellentesque bibendum non dui volutpat fringilla bibendum. Urna, urna, vitae feugiat pretium donec id elementum. Ultrices mattis sed vitae mus risus. Lacus nisi, et ac dapibus sit eu velit in consequat.",
     name: "Fresh Lime",
     price: "$12.00",
+  },
+];
+
+export const Chefs = [
+  {
+    id: 1,
+    img: chef1,
+    name: "Tahmina Rumi",
+    title: "Chef",
+  },
+  {
+    id: 2,
+    img: chef2,
+    name: "Mahmud kholil",
+    title: "Chef",
+  },
+  {
+    id: 3,
+    img: chef3,
+    name: "William Rumi",
+    title: "Chef",
+  },
+  {
+    id: 4,
+    img: chef4,
+    name: "Motin Molladsf",
+    title: "Chef",
+  },
+  {
+    id: 5,
+    img: chef5,
+    name: "Bisnu devgon",
+    title: "Chef",
+  },
+  {
+    id: 6,
+    img: chef6,
+    name: "Munna Kathy",
+    title: "Chef",
+  },
+  {
+    id: 7,
+    img: chef7,
+    name: "M.Mohammad",
+    title: "Chef",
+  },
+  {
+    id: 8,
+    img: chef8,
+    name: "Jorina Begum",
+    title: "Chef",
   },
 ];

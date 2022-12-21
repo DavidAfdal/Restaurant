@@ -9,6 +9,7 @@ import Page404 from "./Shared/Page404";
 import Shop from "./Shop/Page/Shop";
 import Cart from "./Shop/Page/CartPage";
 import Produk from "./Shop/Page/Produk.jsx";
+import Chef from "./Chef/Page/Chef.jsx";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/chef" element={<Chef />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/shop" element={<Shop />} />
