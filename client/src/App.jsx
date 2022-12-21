@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar.jsx";
 import Home from "./Home/pages/Home.jsx";
 import Page404 from "./Shared/Page404";
 import Shop from "./Shop/Page/Shop";
+import Cart from "./Shop/Page/CartPage";
 import Produk from "./Shop/Page/Produk.jsx";
 
 function App() {

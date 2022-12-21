@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -24,6 +24,7 @@ const pages = ["Home", "Blogs", "Pages", "Shop", "About", "Contact"];
 const settings = ["Profile", "Account", "Dashboard", "Logout", "Register", "Login"];
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const [anchorElNav, setAnchorElNav] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -42,6 +43,10 @@ const Navbar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleCartClick = () => {
+    navigate(`/Cart`, { state: { prevPath: pathname } });
   };
 
   return (
@@ -115,7 +120,7 @@ const Navbar = () => {
                 </IconButton>
               </Tooltip>
               <Tooltip title="Cart">
-                <IconButton sx={{ mr: 2 }}>
+                <IconButton sx={{ mr: 2 }} onClick={handleCartClick}>
                   <Badge badgeContent={4} color="secondary" sx={{ "& .MuiBadge-badge": { backgroundColor: "#FF9F0D" }, color: "#fff" }}>
                     <ShoppingCartOutlinedIcon sx={{ color: "#fff" }} />
                   </Badge>
