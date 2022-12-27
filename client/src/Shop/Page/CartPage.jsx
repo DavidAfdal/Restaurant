@@ -6,7 +6,7 @@ import CartItem from "../components/CartItem";
 const Cart = () => {
   return (
     <Box sx={{ bgcolor: "#fff", height: "100%" }}>
-      <HeroItem title="Cart" to="Cart" />
+      <HeroItem title="Shopping Cart" to="Cart" />
       <CartItem />
     </Box>
   );

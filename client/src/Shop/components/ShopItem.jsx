@@ -97,6 +97,7 @@ const ShopItem = () => {
       } catch (error) {
         console.log(error);
       }
+      setIsLoading(false);
     },
     [search, page, show, sort]
   );
@@ -109,12 +110,11 @@ const ShopItem = () => {
     } catch (error) {
       console.log(error);
     }
-    setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    getData(search, page, show, sort);
     getCategory();
+    getData(search, page, show, sort);
   }, [search, page, show, sort]);
 
   return (

@@ -45,13 +45,8 @@ const Navbar = () => {
     setAnchorElUser(null);
   };
 
-<<<<<<< HEAD
-  const handleCart = () => {
-    navigate("/Cart", { state: { prevPath: pathname } });
-=======
   const handleCartClick = () => {
-    navigate(`/Cart`, { state: { prevPath: pathname } });
->>>>>>> 60a92e6ced6db2a6fbc0451578ac056b532ea88a
+    navigate("/Cart", { state: { prevPath: pathname } });
   };
 
   return (
