@@ -20,7 +20,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import "./Navbar.scss";
 import { Badge } from "@mui/material";
 
-const pages = ["Home", "Blogs", "Pages", "Shop", "About", "Contact"];
+const pages = ["Home", "Shop", "About", "Contact"];
 const settings = ["Profile", "Account", "Dashboard", "Logout", "Register", "Login"];
 
 const Navbar = () => {

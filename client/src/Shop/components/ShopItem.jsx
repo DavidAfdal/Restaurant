@@ -1,24 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, Select, FormControl, MenuItem, Typography, Grid, Slider, OutlinedInput, Pagination, InputAdornment, IconButton, Checkbox, FormGroup, FormControlLabel, Button } from "@mui/material";
+import { Box, Stack, Container, Select, FormControl, MenuItem, Typography, Grid, Slider, OutlinedInput, Pagination, InputAdornment, IconButton, Checkbox, FormGroup, FormControlLabel, Button, Skeleton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ItemMenu } from "../Dummydata";
+import axios from "axios";
+import { useCallback } from "react";
 
 const ShopItem = () => {
   //variables
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [sort, setSort] = useState("Rating");
-  const [show, setShow] = useState("Default");
+  const [menus, setMenus] = useState([]);
+  const [sort, setSort] = useState("rating");
+  const [show, setShow] = useState("Asc");
+  const [totalPage, setTotalPage] = useState(0);
   const [randomIndex, setRandomIndex] = useState(0);
   const [filterMenu, setFilterMenu] = useState([]);
-  const [search, setSearch] = useState("");
+
+  const [search, setSearch] = useState({
+    menuFilter: [],
+    searching: "",
+    max: "",
+  });
+
+  const [input, setInput] = useState("");
   const [page, setPage] = useState(1);
-  const [price, setPrice] = useState(10);
-  const sortBy = ["Rating", "Newest", "Latest"];
-  const showBy = ["Default", "Ascending", "Descending"];
+  const [price, setPrice] = useState(200000);
+  const [isLoading, setIsLoading] = useState(false);
+  const sortBy = ["rating", "name", "Latest"];
+  const showBy = ["Asc", "Desc"];
   const checkbox = ["Sandwiches", "Burger", "Chicken Chup", "Drink", "Pizza", "Thi", "Non Veg"];
+  const [category, setCategory] = useState([]);
 
   //functions
   const handleSort = (e) => {
@@ -45,16 +58,21 @@ const ShopItem = () => {
   };
 
   const handleInput = (e) => {
-    setSearch(e.target.value);
+    setInput(e.target.value);
   };
 
   const handleSubmit = () => {
-    console.log(search);
+    setSearch({
+      menuFilter: [...filterMenu],
+      searching: input,
+      max: price,
+    });
+    setInput("");
     console.log(price);
-    setSearch("");
   };
 
   const handlePage = (e, value) => {
+    e.preventDefault();
     setPage(value);
   };
 
@@ -63,9 +81,41 @@ const ShopItem = () => {
   };
 
   useEffect(() => {
-    const random = setInterval(() => setRandomIndex(Math.floor(Math.random() * ItemMenu.length)), 10000);
+    const random = setInterval(() => setRandomIndex(Math.floor(Math.random() * menus.length)), 10000);
     return () => clearInterval(random);
   }, []);
+
+  const getData = useCallback(
+    async (search, page, show, sort) => {
+      setIsLoading(true);
+      try {
+        const menu = await axios.get(`http://localhost:3000/food/search?search=${search.searching}&category=${search.menuFilter?.join()}&asc=${show}&orderby=${sort}&max=${search.max}&page=${page}&limit=12`);
+        console.log(page);
+        console.log(menu.data.payload);
+        setMenus(menu.data.payload.data);
+        setTotalPage(menu.data.payload.totalPage);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [search, page, show, sort]
+  );
+
+  const getCategory = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const category = await axios.get(`http://localhost:3000/food/category`);
+      setCategory(category.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    getData(search, page, show, sort);
+    getCategory();
+  }, [search, page, show, sort]);
 
   return (
     <Container sx={{ py: "100px" }}>
@@ -77,7 +127,7 @@ const ShopItem = () => {
           <FormControl sx={{ m: 1, minWidth: 200 }} size="small">
             <Select value={sort} onChange={handleSort} displayEmpty>
               {sortBy.map((Sort, index) => (
-                <MenuItem value={Sort} key={index} sx={{ backgroundColor: "#fff !important" }}>
+                <MenuItem value={Sort} key={index} sx={{ backgroundColor: "#fff !important", textTransform: "capitalize" }}>
                   {Sort}
                 </MenuItem>
               ))}
@@ -91,7 +141,7 @@ const ShopItem = () => {
           <FormControl sx={{ m: 1, minWidth: 200 }} size="small">
             <Select value={show} onChange={handleShow} displayEmpty>
               {showBy.map((Show, index) => (
-                <MenuItem value={Show} key={index}>
+                <MenuItem value={Show} key={index} sx={{ textTransform: "capitalize" }}>
                   {Show}
                 </MenuItem>
               ))}
@@ -103,17 +153,25 @@ const ShopItem = () => {
       <Grid container spacing={4} sx={{ mt: 1 }} direction={{ xs: "column-reverse", md: "row", lg: "row" }}>
         {/* item menu */}
         <Grid item container lg={9} md={6} spacing={2} sx={{ height: "100%" }}>
-          {ItemMenu.map((menu) => (
-            <Grid item xs={4} key={menu.id}>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: "5px", cursor: "pointer" }} onClick={() => handleClick(menu.id)}>
-                <img src={menu.thumbImg} alt={menu.name} width="100%" height="auto" />
-                <Typography variant="p" sx={{ color: "#232323", fontSize: "18px" }}>
-                  {menu.name}
-                </Typography>
-                <Typography variant="p" sx={{ color: "#ff9f0d" }}>
-                  {menu.price}
-                </Typography>
-              </Box>
+          {menus?.map((menu) => (
+            <Grid item xs={4} key={menu._id}>
+              {isLoading ? (
+                <Box sx={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                  <Skeleton variant="rounded" width="100%" height={180} />
+                  <Skeleton variant="rectangular" width="80%" height={20} />
+                  <Skeleton variant="rectangular" width="30%" height={20} />
+                </Box>
+              ) : (
+                <Box sx={{ display: "flex", flexDirection: "column", gap: "5px", cursor: "pointer" }} onClick={() => handleClick(menu._id)}>
+                  <img src={menu.photos[0].url} alt={menu.name} width="100%" height="100%" />
+                  <Typography variant="p" sx={{ color: "#232323", fontSize: "18px" }}>
+                    {menu.name}
+                  </Typography>
+                  <Typography variant="p" sx={{ color: "#ff9f0d" }}>
+                    Rp.{menu.price}
+                  </Typography>
+                </Box>
+              )}
             </Grid>
           ))}
         </Grid>
@@ -125,7 +183,7 @@ const ShopItem = () => {
           <FormControl sx={{ m: 1 }} variant="outlined">
             <OutlinedInput
               id="outlined-adornment-weight"
-              value={search}
+              value={input}
               onChange={handleInput}
               placeholder="Search Product"
               fullWidth
@@ -152,31 +210,41 @@ const ShopItem = () => {
               Category
             </Typography>
             <FormGroup>
-              {checkbox.map((item, index) => (
-                <FormControlLabel key={index} label={item} control={<Checkbox value={item} onChange={handleCheckBox} sx={{ "&.Mui-checked": { color: "#ff9f0d" }, color: "#232323" }} />} sx={{ color: "#232323" }} />
+              {category.map((item, index) => (
+                <FormControlLabel
+                  key={index}
+                  label={item}
+                  control={<Checkbox value={item} onChange={handleCheckBox} sx={{ "&.Mui-checked": { color: "#ff9f0d" }, color: "#232323" }} />}
+                  sx={{ color: "#232323", textTransform: "capitalize" }}
+                />
               ))}
             </FormGroup>
           </FormControl>
           {/* akhir checkbox filter */}
 
           {/* Rekomendasi Menu */}
-          <Box sx={{ position: "relative", m: 2, display: { xs: "none", lg: "flex" } }}>
-            <Box component="img" src={ItemMenu[randomIndex].thumbImg} width="100%" height="auto" sx={{ display: { xs: "none", md: "flex" } }} />
-            <Box sx={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0, 0, 0, 0.611)" }} />
-            <Box sx={{ position: "absolute", top: "0", left: "0", width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-              <Box sx={{ display: "flex", flexDirection: "column", m: 2 }}>
-                <Typography variant="p" sx={{ color: "#fff", fontSize: "24px", fontWeight: "bold", mb: 1 }}>
-                  {ItemMenu[randomIndex].name}
-                </Typography>
-                <Typography variant="p" sx={{ color: "#ff9f0d", fontSize: "18px" }}>
-                  {ItemMenu[randomIndex].price}
-                </Typography>
+          {isLoading ? (
+            <Skeleton variant="rectangular" width="100%" height={180} />
+          ) : (
+            <Box sx={{ position: "relative", m: 2, display: { xs: "none", lg: "flex" } }}>
+              <Box component="img" src={menus[randomIndex]?.photos[0]?.url} width="100%" height="auto" sx={{ display: { xs: "none", md: "flex" } }} />
+              <Box sx={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0, 0, 0, 0.611)" }} />
+              <Box sx={{ position: "absolute", top: "0", left: "0", width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <Box sx={{ display: "flex", flexDirection: "column", m: 2 }}>
+                  <Typography variant="p" sx={{ color: "#fff", fontSize: "24px", fontWeight: "bold", mb: 1 }}>
+                    {menus[randomIndex]?.name}
+                  </Typography>
+                  <Typography variant="p" sx={{ color: "#ff9f0d", fontSize: "18px" }}>
+                    Rp.{menus[randomIndex]?.price}
+                  </Typography>
+                </Box>
+                <Button variant="text" sx={{ maxWidth: "70%", mr: "auto", ml: 1, mb: 1, color: "#fff", display: "flex", alignItems: "center" }} onClick={() => handleClick(menus[randomIndex]?._id)} endIcon={<ArrowCircleRightOutlinedIcon />}>
+                  Shop Now
+                </Button>
               </Box>
-              <Button variant="text" sx={{ maxWidth: "70%", mr: "auto", ml: 1, mb: 1, color: "#fff", display: "flex", alignItems: "center" }} onClick={() => handleClick(ItemMenu[randomIndex].id)} endIcon={<ArrowCircleRightOutlinedIcon />}>
-                Shop Now
-              </Button>
+              s
             </Box>
-          </Box>
+          )}
           {/* akhir Rekomendasi Menu */}
 
           {/* filter by price */}
@@ -184,9 +252,9 @@ const ShopItem = () => {
             <Typography variant="p" sx={{ color: "#232323", fontWeight: "bold" }}>
               Filter By Price
             </Typography>
-            <Slider defaultValue={price} valueLabelDisplay="auto" onChange={handleSlider} step={5} min={5} max={100} sx={{ color: "#ff9f0d", "& .MuiSlider-valueLabel": { backgroundColor: "#ff9f0d !important" } }} />
+            <Slider value={price} valueLabelDisplay="auto" onChange={handleSlider} step={5000} min={10000} max={200000} sx={{ color: "#ff9f0d", "& .MuiSlider-valueLabel": { backgroundColor: "#ff9f0d !important" } }} />
             <Typography variant="p" sx={{ color: "#1E1E1E", opacity: "0.6" }}>
-              From $5 to $100
+              From Rp 10000 to Rp 100000
             </Typography>
           </Box>
           {/* filter by price */}
@@ -195,7 +263,7 @@ const ShopItem = () => {
       </Grid>
 
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt: 5 }}>
-        <Pagination count={10} shape="rounded" page={page} onChange={handlePage} variant="outlined" />
+        <Pagination count={totalPage} shape="rounded" page={page} onChange={handlePage} variant="outlined" />
       </Box>
     </Container>
   );
