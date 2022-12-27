@@ -7,7 +7,6 @@ const addtoCart = async (req, res, next) => {
     const foodId = req.params.foodId
     try {
         const findUser = await User.findById(userID)
-        console.log(findUser)
         if (findUser.cart_id == '0') {
             const newCart = await new Cart({
                 food: [{
@@ -51,4 +50,21 @@ const addtoCart = async (req, res, next) => {
         next(err)
     }
 }
-module.exports = { addtoCart }
+const getCartbyID = async (req, res, next) => {
+    try {
+        const findUser = await User.findById(req.params.id)
+        try {
+            const getCart = await Cart.findById(findUser.cart_id)
+            res.status(200), json({
+                message: 'Succes',
+                data: getCart
+            })
+        } catch (err) {
+            next(err)
+        }
+    } catch (err) {
+        next(err)
+    }
+
+}
+module.exports = { addtoCart, getCartbyID }

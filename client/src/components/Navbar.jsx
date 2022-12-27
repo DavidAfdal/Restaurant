@@ -45,8 +45,13 @@ const Navbar = () => {
     setAnchorElUser(null);
   };
 
+<<<<<<< HEAD
+  const handleCart = () => {
+    navigate("/Cart", { state: { prevPath: pathname } });
+=======
   const handleCartClick = () => {
     navigate(`/Cart`, { state: { prevPath: pathname } });
+>>>>>>> 60a92e6ced6db2a6fbc0451578ac056b532ea88a
   };
 
   return (
@@ -59,6 +64,7 @@ const Navbar = () => {
                 <MenuIcon />
               </IconButton>
             </Box>
+
             <Typography
               variant="h6"
               noWrap
@@ -66,27 +72,9 @@ const Navbar = () => {
               href="/"
               sx={{
                 mr: 2,
-                display: { xs: "none", md: "flex" },
+                display: { xs: "flex", md: "flex" },
                 fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
-            >
-              Food<span style={{ color: "#FF9F0D" }}>tuck</span>
-            </Typography>
-
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href=""
-              sx={{
-                mr: 2,
-                display: { xs: "flex", md: "none" },
-                flexGrow: 1,
-                fontFamily: "monospace",
+                flexGrow: { xs: 1, md: 0 },
                 fontWeight: 700,
                 letterSpacing: ".3rem",
                 color: "inherit",
@@ -100,7 +88,7 @@ const Navbar = () => {
               {pages.map((page) => (
                 <ul key={page} className="nav_list">
                   <li>
-                    <Link to={page !== "Home" ? `/${page}` : "/"} state={{ prevPath: pathname }} onClick={() => setPath(page)} className="nav_link">
+                    <Link to={page !== "Home" ? `/${page}` : "/"} state={{ prevPath: pathname }} className="nav_link">
                       {page}
                     </Link>
                   </li>
@@ -126,6 +114,7 @@ const Navbar = () => {
                   </Badge>
                 </IconButton>
               </Tooltip>
+
               <Menu
                 sx={{ mt: "45px", "& .MuiMenu-list": { backgroundColor: "#0d0d0d !important" } }}
                 id="menu-appbar"
@@ -154,6 +143,7 @@ const Navbar = () => {
           </Toolbar>
         </Container>
       </AppBar>
+
       <Drawer anchor="left" open={anchorElNav} onClose={handleCloseNavMenu} sx={{ "& .MuiDrawer-paper": { width: { xs: "50%", lg: "100%" }, backgroundColor: "#0d0d0d" }, display: { xs: "flex", md: "none" } }}>
         <Typography
           variant="h5"
