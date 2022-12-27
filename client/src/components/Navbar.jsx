@@ -21,7 +21,7 @@ import "./Navbar.scss";
 import { Badge } from "@mui/material";
 
 const pages = ["Home", "Blogs", "Pages", "Shop", "About", "Contact"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Account", "Dashboard", "Logout", "Register", "Login"];
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -45,8 +45,13 @@ const Navbar = () => {
     setAnchorElUser(null);
   };
 
+<<<<<<< HEAD
   const handleCart = () => {
     navigate("/Cart", { state: { prevPath: pathname } });
+=======
+  const handleCartClick = () => {
+    navigate(`/Cart`, { state: { prevPath: pathname } });
+>>>>>>> 60a92e6ced6db2a6fbc0451578ac056b532ea88a
   };
 
   return (
@@ -103,7 +108,7 @@ const Navbar = () => {
                 </IconButton>
               </Tooltip>
               <Tooltip title="Cart">
-                <IconButton sx={{ mr: 2 }} onClick={handleCart}>
+                <IconButton sx={{ mr: 2 }} onClick={handleCartClick}>
                   <Badge badgeContent={4} color="secondary" sx={{ "& .MuiBadge-badge": { backgroundColor: "#FF9F0D" }, color: "#fff" }}>
                     <ShoppingCartOutlinedIcon sx={{ color: "#fff" }} />
                   </Badge>
@@ -128,7 +133,9 @@ const Navbar = () => {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu} sx={{ backgroundColor: "#0D0D0D", color: "#fff", "&:hover": { color: "#FF9F0D" } }}>
-                    <Typography>{setting}</Typography>
+                    <Link to={setting} state={{ prevPath: pathname }} className="nav_Auth">
+                      {setting}
+                    </Link>
                   </MenuItem>
                 ))}
               </Menu>

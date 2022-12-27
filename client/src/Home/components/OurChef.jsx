@@ -1,11 +1,17 @@
 import { Button, Container, Grid, Typography } from "@mui/material";
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Chef1 from "../assets/chef1.png";
 import Chef2 from "../assets/chef2.png";
 import Chef3 from "../assets/chef3.png";
 import Chef4 from "../assets/chef4.png";
 
 const OurChef = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const handleClick = () => {
+    navigate("/Chef", { state: { prevPath: pathname } });
+  };
   return (
     <Container maxWidth="lg" sx={{ py: "100px" }}>
       <Typography
@@ -46,7 +52,7 @@ const OurChef = () => {
         </Grid>
       </Grid>
       <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
-        <Button variant="outlined" sx={{ borderColor: "#ff9f0d !important", color: "#ff9f0d !important", borderRadius: "50px", px: 2, textTransform: "capitalize" }}>
+        <Button variant="outlined" sx={{ borderColor: "#ff9f0d !important", color: "#ff9f0d !important", borderRadius: "50px", px: 2, textTransform: "capitalize" }} onClick={handleClick}>
           See More
         </Button>
       </div>
