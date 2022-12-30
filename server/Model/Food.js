@@ -15,7 +15,11 @@ const FoodSchema = new mongoose.Schema(
       min: 0,
       max: 5,
     },
-    desc: {
+    long_desc: {
+      type: String,
+      required: true,
+    },
+    short_desc: {
       type: String,
       required: true,
     },
@@ -31,6 +35,10 @@ const FoodSchema = new mongoose.Schema(
     },
     review: {
       type: [String],
+      default: false,
+    },
+    quantity: {
+      type: Number,
       default: false,
     },
   },
