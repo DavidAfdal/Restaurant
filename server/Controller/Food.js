@@ -18,10 +18,12 @@ const createFood = async (req, res, next) => {
         name: req.body.name,
         price: req.body.price,
         rating: req.body.rating,
-        desc: req.body.desc,
+        long_desc: req.body.long_desc,
+        short_desc: req.body.short_desc,
         category: req.body.category,
         review: req.body.review,
         photos: uploadImage,
+
       });
       console.log(newFood);
       try {
