@@ -51,7 +51,7 @@ const filterFood = async (req, res, next) => {
   const limit = parseInt(req.query.limit) || 5;
   let category = req.query.category || "All";
   const orderby = req.query.orderby || "name";
-  const asc = req.query.asc === "Asc" ? 1 : -1;
+  const asc = req.query.asc === "Newest" ? 1 : -1;
 
   let newcategory = [];
 
@@ -67,6 +67,7 @@ const filterFood = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+
   category === "All" ? (category = newcategory) : (category = req.query.category.split(","));
 
   console.log(category);
