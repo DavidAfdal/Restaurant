@@ -21,7 +21,7 @@ const addtoCart = async (req, res, next) => {
                 const updateUser = await User.findByIdAndUpdate(userID, {
                     cart_id: newCart._id
                 }, { new: true })
-                res.status(200).json({
+                return res.send({
                     message: "Succes",
                     data: newCart,
                 })
@@ -31,29 +31,29 @@ const addtoCart = async (req, res, next) => {
         } else {
             try {
                 const getCart = await Cart.findById(findUser.cart_id)
-                let gt
-                for (const carts of getCart.food) {
-                    if (carts.food_id == foodId) {
-                        console.log(carts.food_id == foodId)
+                let FindID = getCart.food.forEach(async index => {
+                    console.log(index.food_id)
+                    if (index.food_id == foodId) {
+                        console.log(index.food_id,foodId)
+                        console.log('sama')
                         try {
-                            let newTotalFood = carts.total_food + req.body.total_food
-                            let newTotalprice = carts.total_price + req.body.total_price
-                            gt = await Cart.findByIdAndUpdate(findUser.cart_id, {
+                            let newTotalFood = index.total_food + req.body.total_food
+                            let newTotalprice = index.total_price + req.body.total_price
+                            gt = await Cart.findOneAndUpdate({ _id: findUser.cart_id, "food.food_id": index.food_id }, {
                                 $set: {
-                                    food: [{
-                                        food_id: carts.food_id,
-                                        total_food: newTotalFood,
-                                        total_price: newTotalprice
-                                    }]
-                                }, $inc: { 'total_price_cart': req.body.total_price },
-                            }, { new: true })
+                                    "food.$.food_id": index.food_id,
+                                    "food.$.total_food": newTotalFood,
+                                    "food.$.total_price": newTotalprice
+                                }
+                            }, { $inc: { 'total_price_cart': req.body.total_price } }, { new: true })
                         } catch (err) {
                             next(err)
                         }
                     } else {
-                        console.log(carts.food_id == foodId)
+                        console.log('tidak sama')
+                        console.log(index.food_id,foodId)
                         try {
-                            gt = await Cart.findByIdAndUpdate(findUser.cart_id, {
+                            gt = await Cart.findByIdAndUpdate({ _id: findUser.cart_id }, {
                                 $push: {
                                     food: [{
                                         food_id: foodId,
@@ -66,8 +66,8 @@ const addtoCart = async (req, res, next) => {
                             next(err)
                         }
                     }
-                }
-                res.status(200).json({
+                })
+                return res.send({
                     message: "Succes",
                     data: getCart,
                 })
