@@ -36,6 +36,7 @@ const addtoCart = async (req, res, next) => {
     } else {
       try {
         const getCart = await Cart.findById(findUser.cart_id);
+        let gt;
         let findFoodId = getCart.food.find((food) => food.food_id === foodId);
         findFoodId === undefined ? (findFoodId = null) : (findFoodId = findFoodId);
         if (findFoodId != null && findFoodId.food_id === foodId) {
@@ -43,10 +44,9 @@ const addtoCart = async (req, res, next) => {
             let newTotalFood = findFoodId.total_food + req.body.total_food;
             let newTotalprice = findFoodId.total_price + req.body.total_price;
             gt = await Cart.findOneAndUpdate(
-              { _id: findUser.cart_id, "food.food_id": findFoodId.food_id },
+              { _id: findUser.cart_id, "food.food_id": foodId },
               {
                 $set: {
-                  "food.$.food_id": findFoodId.food_id,
                   "food.$.total_food": newTotalFood,
                   "food.$.total_price": newTotalprice,
                 },
@@ -73,7 +73,6 @@ const addtoCart = async (req, res, next) => {
               },
               { new: true }
             );
-            console.log(`else : ${gt}`);
           } catch (err) {
             next(err);
           }
@@ -81,7 +80,7 @@ const addtoCart = async (req, res, next) => {
 
         res.status(200).json({
           message: "Succes",
-          data: getCart,
+          data: gt,
         });
       } catch (err) {
         next(err);

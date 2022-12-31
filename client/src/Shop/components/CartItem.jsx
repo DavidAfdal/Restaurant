@@ -22,20 +22,24 @@ const CartItem = () => {
   ];
   const [carts, setCarts] = useState(rows);
   const [total, setTotal] = useState(0);
+
   const countUp = (id) => {
     let updatecart = carts.filter((item) => (item.id === id ? (item.count += 1) : item));
     console.log(updatecart);
     setCarts(updatecart);
   };
+
   const countDown = (id) => {
     let updatecart = carts.filter((item) => (item.id === id && item.count > 1 ? (item.count -= 1) : item));
     console.log(updatecart);
     setCarts(updatecart);
   };
+
   const deleteCart = (id) => {
     setCarts((prevCart) => prevCart.filter((item) => id !== item.id));
     console.log(carts);
   };
+
   useEffect(() => {
     const arrayTotal = carts.map((item) => item.price * item.count);
     console.log(arrayTotal);
@@ -43,6 +47,7 @@ const CartItem = () => {
     console.log(totalHarga);
     setTotal(totalHarga);
   }, [carts]);
+
   return (
     <Container maxWidth="lg" sx={{ py: "100px", height: "100%" }}>
       <TableContainer>
