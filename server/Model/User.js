@@ -16,7 +16,16 @@ const UserSchema = new mongoose.Schema({
     cart_id: {
         type: String,
         default: '0'
-    }
+    },
+    order: [
+        {
+            order_id: { type: String},
+            status: { type: String, default: 'none' }
+        }
+    ]
+
+
+
 }, { timestamps: true })
 
 

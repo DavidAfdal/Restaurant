@@ -4,7 +4,6 @@ const upload = require('../util/multer')
 
 router.post('/add', upload.array('photos', 5), createFood)
 router.get('/search', filterFood)
-router.get('/category', getCategory)
 router.get('/:id', getFoodbyId)
 
 

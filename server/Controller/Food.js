@@ -23,7 +23,6 @@ const createFood = async (req, res, next) => {
         category: req.body.category,
         review: req.body.review,
         photos: uploadImage,
-
       });
       console.log(newFood);
       try {
@@ -53,7 +52,7 @@ const filterFood = async (req, res, next) => {
   const limit = parseInt(req.query.limit) || 5;
   let category = req.query.category || "All";
   const orderby = req.query.orderby || "name";
-  const asc = req.query.asc === "Asc" ? 1 : -1;
+  const asc = req.query.asc === "Newest" ? 1 : -1;
 
   let newcategory = [];
 
@@ -69,6 +68,7 @@ const filterFood = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+
   category === "All" ? (category = newcategory) : (category = req.query.category.split(","));
 
   console.log(category);
@@ -103,26 +103,6 @@ const filterFood = async (req, res, next) => {
   }
 };
 
-const getCategory = async (req, res, next) => {
-  try {
-    const getCategory = await Food.find();
-    let newcategory = [];
-    getCategory.forEach((categorys) => {
-      categorys.category.forEach((category) => {
-        if (!newcategory.includes(category)) {
-          newcategory.push(category);
-        }
-      });
-    });
-    res.status(200).json({
-      message: "Succes",
-      data: newcategory,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
 const getFoodbyId = async (req, res, next) => {
   try {
     const getData = await Food.findById(req.params.id);
@@ -135,4 +115,4 @@ const getFoodbyId = async (req, res, next) => {
   }
 };
 
-module.exports = { createFood, filterFood, getFoodbyId, getCategory };
+module.exports = { createFood, filterFood, getFoodbyId};
