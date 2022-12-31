@@ -103,26 +103,6 @@ const filterFood = async (req, res, next) => {
   }
 };
 
-const getCategory = async (req, res, next) => {
-  try {
-    const getCategory = await Food.find();
-    let newcategory = [];
-    getCategory.forEach((categorys) => {
-      categorys.category.forEach((category) => {
-        if (!newcategory.includes(category)) {
-          newcategory.push(category);
-        }
-      });
-    });
-    res.status(200).json({
-      message: "Succes",
-      data: newcategory,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
 const getFoodbyId = async (req, res, next) => {
   try {
     const getData = await Food.findById(req.params.id);
@@ -135,4 +115,4 @@ const getFoodbyId = async (req, res, next) => {
   }
 };
 
-module.exports = { createFood, filterFood, getFoodbyId, getCategory };
+module.exports = { createFood, filterFood, getFoodbyId};

@@ -13,7 +13,7 @@ const ShopItem = () => {
   const { pathname } = useLocation();
   const [menus, setMenus] = useState([]);
   const [sort, setSort] = useState("rating");
-  const [show, setShow] = useState("Newest");
+  const [show, setShow] = useState("Asc");
   const [totalPage, setTotalPage] = useState(0);
   const [randomIndex, setRandomIndex] = useState(0);
   const [filterMenu, setFilterMenu] = useState([]);
@@ -28,8 +28,9 @@ const ShopItem = () => {
   const [page, setPage] = useState(1);
   const [price, setPrice] = useState(200000);
   const [isLoading, setIsLoading] = useState(false);
-  const sortBy = ["rating", "name"];
-  const showBy = ["Newest", "Latest"];
+  const sortBy = ["rating", "name", "Latest"];
+  const showBy = ["Asc", "Desc"];
+  const checkbox = ["Sandwiches", "Burger", "Chicken Chup", "Drink", "Pizza", "Thi", "Non Veg"];
   const [category, setCategory] = useState([]);
 
   //functions
@@ -80,7 +81,7 @@ const ShopItem = () => {
   };
 
   useEffect(() => {
-    const random = setInterval(() => setRandomIndex(Math.floor(Math.random() * menus.length)), 3000);
+    const random = setInterval(() => setRandomIndex(Math.floor(Math.random() * menus.length)), 10000);
     return () => clearInterval(random);
   }, []);
 
@@ -226,7 +227,7 @@ const ShopItem = () => {
             <Skeleton variant="rectangular" width="100%" height={180} />
           ) : (
             <Box sx={{ position: "relative", m: 2, display: { xs: "none", lg: "flex" } }}>
-              <Box component="img" src={menus[randomIndex]?.photos[0]?.url} width="100%" height="280px" sx={{ display: { xs: "none", md: "flex" } }} />
+              <Box component="img" src={menus[randomIndex]?.photos[0]?.url} width="100%" height="auto" sx={{ display: { xs: "none", md: "flex" } }} />
               <Box sx={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0, 0, 0, 0.611)" }} />
               <Box sx={{ position: "absolute", top: "0", left: "0", width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <Box sx={{ display: "flex", flexDirection: "column", m: 2 }}>

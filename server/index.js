@@ -7,6 +7,8 @@ const userRouter = require("./routes/user");
 const cartRouter = require("./routes/cart");
 const foodRouter = require("./routes/food");
 const reviewRouter = require("./routes/review");
+const shippingRouter = require("./routes/shipping")
+const discRouter = require('./routes/discount')
 const cors = require("cors");
 
 const app = express();
@@ -35,6 +37,9 @@ app.use("/food", foodRouter);
 app.use("/review", reviewRouter);
 app.use("/user", userRouter);
 app.use("/cart", cartRouter);
+app.use("/shipping", shippingRouter);
+app.use("/discount", discRouter);
+
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
