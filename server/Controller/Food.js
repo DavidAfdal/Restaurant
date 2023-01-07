@@ -137,4 +137,4 @@ const getCategory = async (req, res, next) => {
   }
 };
 
-module.exports = { createFood, filterFood, getFoodbyId };
+module.exports = { createFood, filterFood, getFoodbyId, getCategory };
