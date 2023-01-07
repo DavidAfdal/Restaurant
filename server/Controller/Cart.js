@@ -108,6 +108,7 @@ const addtoCart = async (req, res, next) => {
     next(err);
   }
 };
+
 const updateCart = async (req, res, next) => {
   const userID = req.params.userID;
   try {

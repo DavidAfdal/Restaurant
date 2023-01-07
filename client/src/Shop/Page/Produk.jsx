@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import HeroItem from "../../Shared/HeroItem";
 import ProdukDetails from "../components/ProdukDetails";
-import { ItemMenu } from "../Dummydata";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 

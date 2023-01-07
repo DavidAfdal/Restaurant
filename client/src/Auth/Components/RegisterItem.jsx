@@ -3,8 +3,12 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LockPersonOutlinedIcon from "@mui/icons-material/LockPersonOutlined";
 import React from "react";
+import { useState } from "react";
 
 const RegisterItem = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <Container maxWidth="lg" sx={{ py: "100px", height: "100%" }}>
       <Box component="div" sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}>
