@@ -115,4 +115,26 @@ const getFoodbyId = async (req, res, next) => {
   }
 };
 
+const getCategory = async (req, res, next) => {
+  let newcategory = [];
+
+  try {
+    const getCategory = await Food.find();
+    getCategory.forEach((categorys) => {
+      categorys.category.forEach((category) => {
+        if (!newcategory.includes(category)) {
+          newcategory.push(category);
+        }
+      });
+    });
+
+    res.status(200).json({
+      message: "Sucess",
+      data: newcategory,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = { createFood, filterFood, getFoodbyId };

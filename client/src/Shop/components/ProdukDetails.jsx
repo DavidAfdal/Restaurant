@@ -31,6 +31,7 @@ const ProdukDetails = ({ menu, onNext, onPrev, recomend, loading }) => {
     setCount(count + 1);
     console.log(count);
     console.log(parseFloat(menu?.rating));
+    console.log(recomend);
   };
 
   const downCount = () => {

@@ -30,8 +30,7 @@ const ShopItem = () => {
   const [isLoading, setIsLoading] = useState(false);
   const sortBy = ["rating", "name", "Latest"];
   const showBy = ["Asc", "Desc"];
-  const checkbox = ["Sandwiches", "Burger", "Chicken Chup", "Drink", "Pizza", "Thi", "Non Veg"];
-  const [category, setCategory] = useState([]);
+  const [category, setCategory] = useState();
 
   //functions
   const handleSort = (e) => {
@@ -103,18 +102,18 @@ const ShopItem = () => {
   );
 
   const getCategory = useCallback(async () => {
-    setIsLoading(true);
     try {
       const category = await axios.get(`http://localhost:3000/food/category`);
       setCategory(category.data.data);
+      console.log(category.data.data);
     } catch (error) {
       console.log(error);
     }
   }, []);
 
   useEffect(() => {
-    getCategory();
     getData(search, page, show, sort);
+    getCategory();
   }, [search, page, show, sort]);
 
   return (
@@ -210,7 +209,7 @@ const ShopItem = () => {
               Category
             </Typography>
             <FormGroup>
-              {category.map((item, index) => (
+              {category?.map((item, index) => (
                 <FormControlLabel
                   key={index}
                   label={item}

@@ -36,7 +36,7 @@ const Produk = () => {
   const getMenus = async () => {
     setIsLoading(true);
     try {
-      const x = await axios.get(`http://localhost:3000/food/search`);
+      const x = await axios.get(`http://localhost:3000/food/search?limit=12`);
       setMenus(x.data.payload.data);
     } catch (error) {
       console.log(error);
