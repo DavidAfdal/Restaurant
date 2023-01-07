@@ -54,7 +54,7 @@ const ProdukDetails = ({ menu, onNext, onPrev, recomend, loading }) => {
 
   const handelClickAddCart = async () => {
     const data = {
-      total_price: menu?.price,
+      total_price: menu?.price * count,
       total_food: count,
     };
 

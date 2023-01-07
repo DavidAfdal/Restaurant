@@ -8,6 +8,8 @@ const addtoCart = async (req, res, next) => {
   try {
     const foodFinder = await Food.findById(foodId);
     let photosFood = foodFinder.photos[0].url;
+    let name = foodFinder.name;
+    let rating = foodFinder.rating;
     console.log(photosFood);
     try {
       const findUser = await User.findById(userID);
@@ -20,6 +22,8 @@ const addtoCart = async (req, res, next) => {
                 total_food: req.body.total_food,
                 total_price: req.body.total_price,
                 photos: photosFood,
+                name,
+                rating,
               },
             ],
             total_price_cart: req.body.total_price,
@@ -61,6 +65,8 @@ const addtoCart = async (req, res, next) => {
                     "food.$.total_food": newTotalFood,
                     "food.$.total_price": newTotalprice,
                     "food.$.photos": findFoodId.photos,
+                    "food.$.name": findFoodId.name,
+                    "food.$.name": findFoodId.rating,
                     status_cart: "On Cart",
                   },
                   $inc: { total_price_cart: req.body.total_price },
@@ -82,6 +88,8 @@ const addtoCart = async (req, res, next) => {
                       total_food: req.body.total_food,
                       total_price: req.body.total_price,
                       photos: photosFood,
+                      name,
+                      rating,
                     },
                   },
                   $set: { status_cart: "On Cart" },

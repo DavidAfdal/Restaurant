@@ -59,7 +59,7 @@ const Navbar = () => {
     navigate("/");
   };
 
-  const cartItem = useCallback(async () => {
+  const cartItem = async () => {
     try {
       const cart = await axios.get(`http://localhost:3000/cart/${auth?.userId}`);
       setItemCart(cart?.data?.data?.food?.length);
@@ -68,7 +68,7 @@ const Navbar = () => {
       console.log(error);
       setItemCart(0);
     }
-  }, [auth?.userId]);
+  };
 
   useEffect(() => {
     cartItem();
@@ -117,11 +117,6 @@ const Navbar = () => {
             </Box>
 
             <Box sx={{ flexGrow: 0, display: "flex" }}>
-              <Tooltip title="Search Item">
-                <IconButton sx={{ mr: 2 }}>
-                  <SearchOutlinedIcon sx={{ color: "#fff" }} />
-                </IconButton>
-              </Tooltip>
               {auth.isLoggedIn ? (
                 <Tooltip title="User Info">
                   <IconButton onClick={handleOpenUserMenu} sx={{ mr: 2 }}>

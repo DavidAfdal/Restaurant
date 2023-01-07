@@ -8,6 +8,12 @@ const CartSchema = new mongoose.Schema(
         total_food: { type: Number },
         total_price: { type: Number },
         photos: { type: String },
+        rating: {
+          type: Number,
+        },
+        name: {
+          type: String,
+        },
       },
     ],
     total_price_cart: {
