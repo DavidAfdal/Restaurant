@@ -14,6 +14,7 @@ const Produk = () => {
   const [menus, setMenus] = useState([]);
   const [menu, setMenu] = useState();
   const index = menus.findIndex((menu) => menu._id === MenuId);
+  const [isLoading, setIsLoading] = useState(false);
   const len = menus.length;
 
   const menuNavigationDetails = (id) => {
@@ -33,12 +34,14 @@ const Produk = () => {
   }, [MenuId]);
 
   const getMenus = async () => {
+    setIsLoading(true);
     try {
       const x = await axios.get(`http://localhost:3000/food/search`);
       setMenus(x.data.payload.data);
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -48,7 +51,7 @@ const Produk = () => {
   return (
     <Box sx={{ bgcolor: "#fff", height: "100%" }}>
       <HeroItem title="Shop Details" to="Details" />
-      <ProdukDetails menu={menu} onNext={() => menuNavigationDetails(menus[(index + 1) % len]._id)} onPrev={() => menuNavigationDetails(menus[(index + len - 1) % len]._id)} recomend={menus} />
+      <ProdukDetails menu={menu} onNext={() => menuNavigationDetails(menus[(index + 1) % len]._id)} onPrev={() => menuNavigationDetails(menus[(index + len - 1) % len]._id)} recomend={menus} loading={isLoading} />
     </Box>
   );
 };
