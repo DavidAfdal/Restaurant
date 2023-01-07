@@ -48,7 +48,7 @@ const Navbar = () => {
   const handleCartClick = () => {
     navigate("/Cart", { state: { prevPath: pathname } });
   };
-
+ 
   return (
     <div>
       <AppBar position="relative" sx={{ backgroundColor: "#0D0D0D" }} style={{ zIndex: 100 }} elevation={path === "Home" ? 0 : 12}>
