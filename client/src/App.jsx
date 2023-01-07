@@ -10,21 +10,30 @@ import Cart from "./Shop/Page/CartPage";
 import Produk from "./Shop/Page/Produk.jsx";
 import Chef from "./Chef/Page/Chef.jsx";
 import { AuthContext } from "./Shared/context/auth-context.jsx";
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [userId, setUserId] = useState(null);
 
-  const login = (uId) => {
+  const login = useCallback((uId) => {
     setIsLogin(true);
     setUserId(uId);
-  };
+    localStorage.setItem("userData", JSON.stringify({ userId: uId }));
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setIsLogin(false);
     setUserId(null);
-  };
+    localStorage.removeItem("userData");
+  }, []);
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+    if (storedData) {
+      login(storedData.userId);
+    }
+  }, [login]);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn: !!isLogin, userId, login, logout }}>

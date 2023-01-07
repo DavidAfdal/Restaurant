@@ -56,9 +56,6 @@ const CartItem = () => {
             <TableRow>
               <TableCell sx={{ color: "#232323", border: "none", fontWeight: "bold", fontSize: "18px" }}>Product</TableCell>
               <TableCell sx={{ color: "#232323", border: "none", fontWeight: "bold" }} align="center">
-                Price
-              </TableCell>
-              <TableCell sx={{ color: "#232323", border: "none", fontWeight: "bold" }} align="center">
                 Quantity
               </TableCell>
               <TableCell sx={{ color: "#232323", border: "none", fontWeight: "bold" }} align="center">
@@ -84,9 +81,6 @@ const CartItem = () => {
                       <Rating value={4} readOnly sx={{ color: "#ff9f0d", mt: 1 }} />
                     </Grid>
                   </Grid>
-                </TableCell>
-                <TableCell sx={{ color: "#232323" }} align="center">
-                  ${cart.price}
                 </TableCell>
                 <TableCell sx={{ color: "#232323" }} align="center">
                   <ButtonGroup disableElevation variant="outlined" size="small">

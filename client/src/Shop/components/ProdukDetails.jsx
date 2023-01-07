@@ -3,11 +3,15 @@ import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 import Slider from "react-slick";
-import { useNavigate, useLocation } from "react-router-dom";
-import React, { useState, useRef } from "react";
+import { useNavigate, useLocation, Await } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
 import Review from "./Review";
+import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "../../Shared/context/auth-context";
 
 const ProdukDetails = ({ menu, onNext, onPrev, recomend, loading }) => {
+  const auth = useContext(AuthContext);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const settings = {
@@ -21,10 +25,10 @@ const ProdukDetails = ({ menu, onNext, onPrev, recomend, loading }) => {
   const slider = useRef(null);
   const [thumbid, setThumbId] = useState(0);
   const [count, setCount] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = (id) => {
     setThumbId(id);
-    console.log(id);
   };
 
   const upCount = () => {
@@ -48,7 +52,28 @@ const ProdukDetails = ({ menu, onNext, onPrev, recomend, loading }) => {
     console.log("hello");
   };
 
-  return loading ? (
+  const handelClickAddCart = async () => {
+    const data = {
+      total_price: menu?.price,
+      total_food: count,
+    };
+
+    try {
+      const cart = await axios.post(`http://localhost:3000/cart/add/${auth?.userId}/${menu?._id}`, data);
+      console.log(cart);
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (loading) {
+      setThumbId(0);
+    }
+  }, [loading]);
+
+  return loading === true || isLoading === true ? (
     <Container maxWidth="lg" sx={{ py: "250px", height: "100vh" }}>
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
         <CircularProgress sx={{ color: "#ff9f0d" }} size={70} />
@@ -115,6 +140,7 @@ const ProdukDetails = ({ menu, onNext, onPrev, recomend, loading }) => {
               </ButtonGroup>
               <Button
                 variant="contained"
+                onClick={handelClickAddCart}
                 startIcon={<LocalMallOutlinedIcon />}
                 sx={{ borderRadius: "4px", bgcolor: "#ff9f0d", "&:hover": { bgcolor: "#ff9f0d", boxShadow: "none" }, boxShadow: "none", justifyContent: "flex-start", textTransform: "capitalize" }}
               >
@@ -147,7 +173,13 @@ const ProdukDetails = ({ menu, onNext, onPrev, recomend, loading }) => {
       </Box>
       <Slider ref={slider} {...settings} style={{ marginTop: "50px" }} className="recomend_Slider">
         {recomend?.map((recomend) => (
-          <Box sx={{ cursor: "pointer", mr: 2 }} onClick={() => handleRecomnd(recomend?._id)} key={recomend?._id}>
+          <Box
+            sx={{ cursor: "pointer", mr: 2 }}
+            onClick={() => {
+              handleRecomnd(recomend?._id);
+            }}
+            key={recomend?._id}
+          >
             <Stack gap={1}>
               <img src={recomend?.photos[0]?.url} alt={recomend?.name} width="100%" height="auto" />
               <Typography variant="p" sx={{ color: "#232323", fontSize: "18px" }}>
