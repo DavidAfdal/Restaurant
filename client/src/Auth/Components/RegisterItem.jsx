@@ -97,14 +97,6 @@ const RegisterItem = () => {
                 Submit
               </Button>
             </form>
-
-            <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
-              <Divider sx={{ width: "40%" }} />
-              <Typography variant="p" sx={{ width: "20%", textAlign: "center" }}>
-                OR
-              </Typography>
-              <Divider sx={{ width: "40%" }} />
-            </Box>
           </CardContent>
         </Card>
       </Box>

@@ -202,7 +202,6 @@ const ShopItem = () => {
             />
           </FormControl>
           {/* akhir search input */}
-
           {/* checkbox filter */}
           <FormControl sx={{ m: 2 }}>
             <Typography variant="p" sx={{ color: "#232323", fontWeight: "bold" }}>
@@ -224,7 +223,7 @@ const ShopItem = () => {
           {/* Rekomendasi Menu */}
           {isLoading ? (
             <Skeleton variant="rectangular" width="100%" height={180} />
-          ) : (
+          ) : menus != null ? (
             <Box sx={{ position: "relative", m: 2, display: { xs: "none", lg: "flex" } }}>
               <Box component="img" src={menus[randomIndex]?.photos[0]?.url} width="100%" height="auto" sx={{ display: { xs: "none", md: "flex" } }} />
               <Box sx={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0, 0, 0, 0.611)" }} />
@@ -234,18 +233,16 @@ const ShopItem = () => {
                     {menus[randomIndex]?.name}
                   </Typography>
                   <Typography variant="p" sx={{ color: "#ff9f0d", fontSize: "18px" }}>
-                    Rp.{menus[randomIndex]?.price}
+                    {menus[randomIndex]?.price}
                   </Typography>
                 </Box>
                 <Button variant="text" sx={{ maxWidth: "70%", mr: "auto", ml: 1, mb: 1, color: "#fff", display: "flex", alignItems: "center" }} onClick={() => handleClick(menus[randomIndex]?._id)} endIcon={<ArrowCircleRightOutlinedIcon />}>
                   Shop Now
                 </Button>
               </Box>
-              s
             </Box>
-          )}
+          ) : null}
           {/* akhir Rekomendasi Menu */}
-
           {/* filter by price */}
           <Box sx={{ m: 2 }}>
             <Typography variant="p" sx={{ color: "#232323", fontWeight: "bold" }}>

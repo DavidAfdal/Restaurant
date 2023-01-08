@@ -69,7 +69,7 @@ const CartItem = () => {
     let totalHarga = 0;
     items.forEach((food) => (totalHarga += food.total_price));
     setHarga(totalHarga);
-    setTotal(harga - (5 / 100) * totalHarga);
+    setTotal(harga + (5 / 100) * harga);
   }, [items]);
 
   useEffect(() => {
