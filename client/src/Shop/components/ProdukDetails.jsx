@@ -186,7 +186,7 @@ const ProdukDetails = ({ menu, onNext, onPrev, recomend, loading }) => {
                 {recomend?.name}
               </Typography>
               <Typography variant="p" sx={{ color: "#ff9f0d" }}>
-                {recomend?.price}
+                Rp.{recomend?.price}
               </Typography>
             </Stack>
           </Box>
