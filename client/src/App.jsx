@@ -9,23 +9,49 @@ import Shop from "./Shop/Page/Shop";
 import Cart from "./Shop/Page/CartPage";
 import Produk from "./Shop/Page/Produk.jsx";
 import Chef from "./Chef/Page/Chef.jsx";
+import { AuthContext } from "./Shared/context/auth-context.jsx";
+import { useEffect, useState, useCallback } from "react";
 
 function App() {
+  const [isLogin, setIsLogin] = useState(false);
+  const [userId, setUserId] = useState(null);
+
+  const login = useCallback((uId) => {
+    setIsLogin(true);
+    setUserId(uId);
+    localStorage.setItem("userData", JSON.stringify({ userId: uId }));
+  }, []);
+
+  const logout = useCallback(() => {
+    setIsLogin(false);
+    setUserId(null);
+    localStorage.removeItem("userData");
+  }, []);
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+    if (storedData) {
+      login(storedData.userId);
+    }
+  }, [login]);
+
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/chef" element={<Chef />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/menu/:menuId" element={<Produk />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="*" element={<Page404 />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthContext.Provider value={{ isLoggedIn: !!isLogin, userId, login, logout }}>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/chef" element={<Chef />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/menu/:menuId" element={<Produk />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="*" element={<Page404 />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthContext.Provider>
   );
 }
 

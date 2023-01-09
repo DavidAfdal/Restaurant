@@ -1,20 +1,30 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-
-const CartSchema = new mongoose.Schema({
-    food: [{
+const CartSchema = new mongoose.Schema(
+  {
+    food: [
+      {
         food_id: { type: String },
         total_food: { type: Number },
         total_price: { type: Number },
-        photos: { type: String }
-    }],
+        photos: { type: String },
+        rating: {
+          type: Number,
+        },
+        name: {
+          type: String,
+        },
+      },
+    ],
     total_price_cart: {
-        type: Number
+      type: Number,
     },
     status_cart: {
-        type: String,
-        default: 'On Cart'
+      type: String,
+      default: "On Cart",
     },
-}, { timestamps: true })
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model("Cart", CartSchema)
+module.exports = mongoose.model("Cart", CartSchema);

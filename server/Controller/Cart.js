@@ -158,6 +158,7 @@ const deleteCart = async (req, res, next) => {
         const findUser = await User.findById(userID);
         console.log(findUser.cart_id)
         try {
+
             const getCart = await Cart.findById(findUser.cart_id)
             let finalFood = []
             let total_price_cart = 0

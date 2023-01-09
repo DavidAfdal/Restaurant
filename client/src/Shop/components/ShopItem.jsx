@@ -28,8 +28,9 @@ const ShopItem = () => {
   const [page, setPage] = useState(1);
   const [price, setPrice] = useState(200000);
   const [isLoading, setIsLoading] = useState(false);
-  const sortBy = ["rating", "name"];
-  const showBy = ["Newest", "Latest"];
+  const sortBy = ["rating", "name", "Latest"];
+  const showBy = ["Asc", "Desc"];
+  const checkbox = ["Sandwiches", "Burger", "Chicken Chup", "Drink", "Pizza", "Thi", "Non Veg"];
   const [category, setCategory] = useState([]);
 
   //functions
@@ -102,18 +103,18 @@ const ShopItem = () => {
   );
 
   const getCategory = useCallback(async () => {
-    setIsLoading(true);
     try {
       const category = await axios.get(`http://localhost:3000/food/category`);
       setCategory(category.data.data);
+      console.log(category.data.data);
     } catch (error) {
       console.log(error);
     }
   }, []);
 
   useEffect(() => {
-    getCategory();
     getData(search, page, show, sort);
+    getCategory();
   }, [search, page, show, sort]);
 
   return (
@@ -202,14 +203,13 @@ const ShopItem = () => {
             />
           </FormControl>
           {/* akhir search input */}
-
           {/* checkbox filter */}
           <FormControl sx={{ m: 2 }}>
             <Typography variant="p" sx={{ color: "#232323", fontWeight: "bold" }}>
               Category
             </Typography>
             <FormGroup>
-              {category.map((item, index) => (
+              {category?.map((item, index) => (
                 <FormControlLabel
                   key={index}
                   label={item}
@@ -224,7 +224,7 @@ const ShopItem = () => {
           {/* Rekomendasi Menu */}
           {isLoading ? (
             <Skeleton variant="rectangular" width="100%" height={180} />
-          ) : (
+          ) : menus != null ? (
             <Box sx={{ position: "relative", m: 2, display: { xs: "none", lg: "flex" } }}>
               <Box component="img" src={menus[randomIndex]?.photos[0]?.url} width="100%" height="280px" sx={{ display: { xs: "none", md: "flex" } }} />
               <Box sx={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0, 0, 0, 0.611)" }} />
@@ -234,18 +234,16 @@ const ShopItem = () => {
                     {menus[randomIndex]?.name}
                   </Typography>
                   <Typography variant="p" sx={{ color: "#ff9f0d", fontSize: "18px" }}>
-                    Rp.{menus[randomIndex]?.price}
+                    {menus[randomIndex]?.price}
                   </Typography>
                 </Box>
                 <Button variant="text" sx={{ maxWidth: "70%", mr: "auto", ml: 1, mb: 1, color: "#fff", display: "flex", alignItems: "center" }} onClick={() => handleClick(menus[randomIndex]?._id)} endIcon={<ArrowCircleRightOutlinedIcon />}>
                   Shop Now
                 </Button>
               </Box>
-              s
             </Box>
-          )}
+          ) : null}
           {/* akhir Rekomendasi Menu */}
-
           {/* filter by price */}
           <Box sx={{ m: 2 }}>
             <Typography variant="p" sx={{ color: "#232323", fontWeight: "bold" }}>

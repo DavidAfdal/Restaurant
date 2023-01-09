@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useCallback, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import AppBar from "@mui/material/AppBar";
@@ -12,6 +12,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import Container from "@mui/material/Container";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
@@ -19,16 +20,20 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 
 import "./Navbar.scss";
 import { Badge } from "@mui/material";
+import { AuthContext } from "../Shared/context/auth-context";
+import axios from "axios";
 
 const pages = ["Home", "Shop", "About", "Contact"];
-const settings = ["Profile", "Account", "Dashboard", "Logout", "Register", "Login"];
+const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const auth = useContext(AuthContext);
   const { pathname } = useLocation();
   const [anchorElNav, setAnchorElNav] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [path, setPath] = useState("");
+  const [itemCart, setItemCart] = useState(0);
 
   const handleOpenNavMenu = () => {
     setAnchorElNav(true);
@@ -48,6 +53,26 @@ const Navbar = () => {
   const handleCartClick = () => {
     navigate("/Cart", { state: { prevPath: pathname } });
   };
+
+  const logoutHandler = () => {
+    auth.logout();
+    navigate("/");
+  };
+
+  const cartItem = async () => {
+    try {
+      const cart = await axios.get(`http://localhost:3000/cart/${auth?.userId}`);
+      setItemCart(cart?.data?.data?.food?.length);
+      console.log(cart);
+    } catch (error) {
+      console.log(error);
+      setItemCart(0);
+    }
+  };
+
+  useEffect(() => {
+    cartItem();
+  }, [auth?.userId]);
 
   return (
     <div>
@@ -92,23 +117,35 @@ const Navbar = () => {
             </Box>
 
             <Box sx={{ flexGrow: 0, display: "flex" }}>
-              <Tooltip title="Search Item">
-                <IconButton sx={{ mr: 2 }}>
-                  <SearchOutlinedIcon sx={{ color: "#fff" }} />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="User Info">
-                <IconButton onClick={handleOpenUserMenu} sx={{ mr: 2 }}>
-                  <PersonOutlineOutlinedIcon sx={{ color: "#fff" }} />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Cart">
-                <IconButton sx={{ mr: 2 }} onClick={handleCartClick}>
-                  <Badge badgeContent={4} color="secondary" sx={{ "& .MuiBadge-badge": { backgroundColor: "#FF9F0D" }, color: "#fff" }}>
-                    <ShoppingCartOutlinedIcon sx={{ color: "#fff" }} />
-                  </Badge>
-                </IconButton>
-              </Tooltip>
+              {auth.isLoggedIn ? (
+                <Tooltip title="User Info">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ mr: 2 }}>
+                    <PersonOutlineOutlinedIcon sx={{ color: "#fff" }} />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                <Button variant="text" onClick={() => navigate("/Register", { state: { prevPath: pathname } })} sx={{ textTransform: "capitalize", color: "#fff", mr: 2 }}>
+                  Register
+                </Button>
+              )}
+
+              {auth.isLoggedIn ? (
+                <Tooltip title="Cart">
+                  <IconButton sx={{ mr: 2 }} onClick={handleCartClick}>
+                    <Badge badgeContent={itemCart} color="secondary" sx={{ "& .MuiBadge-badge": { backgroundColor: "#FF9F0D" }, color: "#fff" }}>
+                      <ShoppingCartOutlinedIcon sx={{ color: "#fff" }} />
+                    </Badge>
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                <Button
+                  variant="outlined"
+                  onClick={() => navigate("/Login", { state: { prevPath: pathname } })}
+                  sx={{ textTransform: "capitalize", color: "#FF9F0D", borderColor: "#FF9F0D", "&:hover": { borderColor: "#FF9F0D !important" } }}
+                >
+                  Login
+                </Button>
+              )}
 
               <Menu
                 sx={{ mt: "45px", "& .MuiMenu-list": { backgroundColor: "#0d0d0d !important" } }}
@@ -128,9 +165,15 @@ const Navbar = () => {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu} sx={{ backgroundColor: "#0D0D0D", color: "#fff", "&:hover": { color: "#FF9F0D" } }}>
-                    <Link to={setting} state={{ prevPath: pathname }} className="nav_Auth">
-                      {setting}
-                    </Link>
+                    {setting === "Logout" ? (
+                      <Box onClick={logoutHandler}>
+                        <Typography className="nav_Auth">{setting}</Typography>
+                      </Box>
+                    ) : (
+                      <Link to={setting} state={{ prevPath: pathname }} className="nav_Auth">
+                        {setting}
+                      </Link>
+                    )}
                   </MenuItem>
                 ))}
               </Menu>

@@ -7,52 +7,82 @@ import item4 from "../assets/Item4.png";
 import item5 from "../assets/Item5.png";
 import item6 from "../assets/Item6.png";
 import React, { useEffect, useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../Shared/context/auth-context";
+import axios from "axios";
 
 const CartItem = () => {
-  function createData(id, name, img, price, count) {
-    return { id, name, img, price, count };
-  }
-  const rows = [
-    createData(1, "Frozen yoghurt", item1, 15, 2),
-    createData(2, "Ice cream sandwich", item2, 20, 5),
-    createData(3, "Eclair", item3, 40, 4),
-    createData(4, "Cupcake", item4, 10, 3),
-    createData(5, "Gingerbread", item5, 17, 1),
-    createData(6, "Bread", item6, 25, 2),
-  ];
-  const [carts, setCarts] = useState(rows);
+  const auth = useContext(AuthContext);
+  const [harga, setHarga] = useState(0);
   const [total, setTotal] = useState(0);
+  const [items, setItems] = useState([]);
+
   const countUp = (id) => {
-    let updatecart = carts.filter((item) => (item.id === id ? (item.count += 1) : item));
+    let updatecart = items.filter((item) => {
+      if (item._id === id) {
+        const price = item.total_price / item.total_food;
+        item.total_food += 1;
+        item.total_price = price * item.total_food;
+        return item;
+      } else {
+        return item;
+      }
+    });
+
     console.log(updatecart);
-    setCarts(updatecart);
+    setItems(updatecart);
   };
+
   const countDown = (id) => {
-    let updatecart = carts.filter((item) => (item.id === id && item.count > 1 ? (item.count -= 1) : item));
-    console.log(updatecart);
-    setCarts(updatecart);
+    let updatecart = items.filter((item) => {
+      if (item._id === id && item.total_food > 1) {
+        const price = item.total_price / item.total_food;
+        item.total_food -= 1;
+        item.total_price = price * item.total_food;
+        return item;
+      } else {
+        return item;
+      }
+    });
+
+    setItems(updatecart);
   };
+
   const deleteCart = (id) => {
-    setCarts((prevCart) => prevCart.filter((item) => id !== item.id));
+    setItems((prevCart) => prevCart.filter((item) => id !== item._id));
     console.log(carts);
   };
+
+  const getItem = async () => {
+    try {
+      const cart = await axios.get(`http://localhost:3000/cart/${auth.userId}`);
+      console.log(cart);
+      setItems(cart?.data?.data?.food);
+      setTotal(cart?.data?.data?.total_price_cart);
+    } catch (error) {
+      console.log(error);
+      setItems([]);
+    }
+  };
+
   useEffect(() => {
-    const arrayTotal = carts.map((item) => item.price * item.count);
-    console.log(arrayTotal);
-    const totalHarga = arrayTotal.reduce((total, currentValue) => total + currentValue, 0);
-    console.log(totalHarga);
-    setTotal(totalHarga);
-  }, [carts]);
+    let totalHarga = 0;
+    items.forEach((food) => (totalHarga += food.total_price));
+    setHarga(totalHarga);
+    setTotal(harga + (5 / 100) * harga);
+  }, [items]);
+
+  useEffect(() => {
+    getItem();
+  }, [auth.userId]);
+
   return (
     <Container maxWidth="lg" sx={{ py: "100px", height: "100%" }}>
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ color: "#232323", border: "none", fontWeight: "bold", fontSize: "18px" }}>Product</TableCell>
-              <TableCell sx={{ color: "#232323", border: "none", fontWeight: "bold" }} align="center">
-                Price
-              </TableCell>
+              <TableCell sx={{ color: "#232323", border: "none", fontWeight: "bold", fontSize: "18px", width: "60%" }}>Product</TableCell>
               <TableCell sx={{ color: "#232323", border: "none", fontWeight: "bold" }} align="center">
                 Quantity
               </TableCell>
@@ -65,42 +95,39 @@ const CartItem = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {carts.map((cart) => (
-              <TableRow key={cart.id} sx={{ border: 0 }}>
+            {items.map((cart) => (
+              <TableRow key={cart._id} sx={{ border: 0 }}>
                 <TableCell component="th" scope="row" sx={{ color: "#232323" }}>
                   <Grid container spacing={2}>
                     <Grid item xs={2}>
-                      <img src={cart.img} alt={cart.name} width="100%" height="auto" />
+                      <img src={cart.photos} alt={cart._id} width="100%" height="auto" />
                     </Grid>
                     <Grid item xs={10} container direction="column">
                       <Typography variant="p" sx={{ color: "#232323", mt: 1, fontWeight: "bold" }}>
                         {cart.name}
                       </Typography>
-                      <Rating value={4} readOnly sx={{ color: "#ff9f0d", mt: 1 }} />
+                      <Rating value={cart.rating} readOnly sx={{ color: "#ff9f0d", mt: 1 }} />
                     </Grid>
                   </Grid>
                 </TableCell>
                 <TableCell sx={{ color: "#232323" }} align="center">
-                  ${cart.price}
-                </TableCell>
-                <TableCell sx={{ color: "#232323" }} align="center">
                   <ButtonGroup disableElevation variant="outlined" size="small">
-                    <Button sx={{ border: "1px solid #ff9f0d !important", color: "#ff9f0d" }} onClick={() => countUp(cart.id)}>
+                    <Button sx={{ border: "1px solid #ff9f0d !important", color: "#ff9f0d" }} onClick={() => countUp(cart._id)}>
                       +
                     </Button>
                     <Typography variant="p" sx={{ color: "#", borderTop: "1px solid #ff9f0d", borderBottom: "1px solid #ff9f0d", py: 1, px: 2 }}>
-                      {cart.count}
+                      {cart.total_food}
                     </Typography>
-                    <Button sx={{ border: "1px solid #ff9f0d !important", color: "#ff9f0d" }} onClick={() => countDown(cart.id)}>
+                    <Button sx={{ border: "1px solid #ff9f0d !important", color: "#ff9f0d" }} onClick={() => countDown(cart._id)}>
                       -
                     </Button>
                   </ButtonGroup>
                 </TableCell>
                 <TableCell sx={{ color: "#232323" }} align="center">
-                  ${cart.price * cart.count}
+                  RP. {cart.total_price}
                 </TableCell>
                 <TableCell sx={{ color: "#232323" }} align="center">
-                  <IconButton onClick={() => deleteCart(cart.id)}>
+                  <IconButton onClick={() => deleteCart(cart._id)}>
                     <CloseIcon sx={{ color: "#232323", "&:hover": { color: "#ff9f0d" } }} />
                   </IconButton>
                 </TableCell>
@@ -109,8 +136,9 @@ const CartItem = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Grid container spacing={4} sx={{ mt: 4 }}>
-        <Grid item lg={6} xs={12}>
+
+      <Grid container spacing={4} sx={{ mt: 4 }} direction="row-reverse">
+        {/* <Grid item lg={6} xs={12}>
           <Typography variant="h4" sx={{ color: "#232323", mb: 2 }}>
             Coupon Code
           </Typography>
@@ -129,11 +157,11 @@ const CartItem = () => {
               </FormControl>
             </CardContent>
           </Card>
-        </Grid>
+        </Grid> */}
         <Grid item lg={6} xs={12}>
           <Stack spacing={2}>
             <Typography variant="h4" sx={{ color: "#232323" }}>
-              Total Bil
+              Total Payment
             </Typography>
             <Card sx={{ border: " 1px solid #BDBDBD" }} variant="outlined">
               <CardContent>
@@ -143,15 +171,15 @@ const CartItem = () => {
                       Cart Subtotal
                     </Typography>
                     <Typography variant="p" sx={{ color: "#232323" }}>
-                      ${total}
+                      Rp. {harga}
                     </Typography>
                   </Box>
                   <Box component="div" sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Typography variant="p" sx={{ color: "#232323", opacity: "0.75" }}>
-                      Shipping Charge
+                      Shipping Charge(Tax 5%)
                     </Typography>
                     <Typography variant="p" sx={{ color: "#232323", opacity: "0.75" }}>
-                      $0
+                      RP. {(5 / 100) * harga}
                     </Typography>
                   </Box>
                 </Stack>
@@ -161,7 +189,7 @@ const CartItem = () => {
                     Total Amount
                   </Typography>
                   <Typography variant="p" sx={{ color: "#232323" }}>
-                    ${total}
+                    Rp. {total}
                   </Typography>
                 </Box>
               </CardContent>

@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import HeroItem from "../../Shared/HeroItem";
 import ProdukDetails from "../components/ProdukDetails";
-import { ItemMenu } from "../Dummydata";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
@@ -16,6 +15,7 @@ const Produk = () => {
   const [menus, setMenus] = useState([]);
   const [menu, setMenu] = useState();
   const index = menus.findIndex((menu) => menu._id === MenuId);
+  const [isLoading, setIsLoading] = useState(false);
   const len = menus.length;
 
   const menuNavigationDetails = (id) => {
@@ -35,7 +35,7 @@ const Produk = () => {
   const getMenus = async () => {
     setIsLoading(true);
     try {
-      const x = await axios.get(`http://localhost:3000/food/search`);
+      const x = await axios.get(`http://localhost:3000/food/search?limit=12`);
       setMenus(x.data.payload.data);
       console.log(menus);
     } catch (error) {
