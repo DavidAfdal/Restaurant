@@ -1,4 +1,4 @@
-import { Container, Grid, Stack, Typography, Box, Divider, Rating, ButtonGroup, Button, IconButton } from "@mui/material";
+import { Container, Grid, Stack, Typography, Box, Divider, Rating, ButtonGroup, Button, IconButton, CircularProgress } from "@mui/material";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import React, { useState, useRef } from "react";
 import Review from "./Review";
 
-const ProdukDetails = ({ menu, onNext, onPrev, recomend }) => {
+const ProdukDetails = ({ menu, onNext, onPrev, recomend, loading }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const settings = {
@@ -47,7 +47,11 @@ const ProdukDetails = ({ menu, onNext, onPrev, recomend }) => {
     console.log("hello");
   };
 
-  return (
+  return loading ? (
+    <Container maxWidth="lg" sx={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <CircularProgress sx={{ color: "#ff9f0d" }} size={70} />
+    </Container>
+  ) : (
     <Container maxWidth="lg" sx={{ py: "100px" }}>
       <Grid container spacing={3}>
         <Grid item container lg={7} xs={12} spacing={2}>
@@ -147,7 +151,7 @@ const ProdukDetails = ({ menu, onNext, onPrev, recomend }) => {
                 {recomend?.name}
               </Typography>
               <Typography variant="p" sx={{ color: "#ff9f0d" }}>
-                {recomend?.price}
+                Rp.{recomend?.price}
               </Typography>
             </Stack>
           </Box>
