@@ -51,7 +51,6 @@ const addtoCart = async (req, res, next) => {
                     findFoodId === undefined ? (findFoodId = null) : (findFoodId = findFoodId);
                     if (findFoodId != null && findFoodId.food_id === foodId) {
                         try {
-                            console.log('sama')
                             let newTotalFood = findFoodId.total_food + req.body.total_food;
                             let newTotalprice = findFoodId.total_price + req.body.total_price;
                             gt = await Cart.findOneAndUpdate(
@@ -125,6 +124,7 @@ const updateCart = async (req, res, next) => {
                     let newFood = {
                         "food_id": arrayOfFood[i].food_id,
                         "total_food": arrayOfFood[i].total_food,
+                        "photos":arrayOfFood[i].photos,
                         "total_price": arrayOfFood[i].total_price,
                     }
                     total_price_cart += arrayOfFood[i].total_price
@@ -151,7 +151,47 @@ const updateCart = async (req, res, next) => {
         next(err)
     }
 }
-
+const deleteCart = async (req, res, next) => {
+    const userID = req.params.id
+    const foodId = req.params.foodId
+    try {
+        const findUser = await User.findById(userID);
+        console.log(findUser.cart_id)
+        try {
+            const getCart = await Cart.findById(findUser.cart_id)
+            let finalFood = []
+            let total_price_cart = 0
+            const arrayOfFood = getCart.food
+            for (let i = 0; i < arrayOfFood.length; i++) {
+                if (arrayOfFood[i].food_id !== foodId) {
+                    let newFood = {
+                        "food_id": arrayOfFood[i].food_id,
+                        "total_food": arrayOfFood[i].total_food,
+                        "photos":arrayOfFood[i].photos,
+                        "total_price": arrayOfFood[i].total_price,
+                    }
+                    total_price_cart += arrayOfFood[i].total_price
+                    finalFood.push(newFood)
+                }
+            }
+            const finalCart = await Cart.findByIdAndUpdate(findUser.cart_id, {
+                $set: {
+                    "food": finalFood,
+                    "total_price_cart": total_price_cart,
+                    "status_cart": "On Cart"
+                }
+            }, { new: true });
+            res.status(200).json({
+                message: 'Succes',
+                data: finalCart
+            })
+        } catch (err) {
+            next(err)
+        }
+    } catch (err) {
+        next(err)
+    }
+}
 const getCartbyID = async (req, res, next) => {
     try {
         const findUser = await User.findById(req.params.id);
@@ -169,4 +209,4 @@ const getCartbyID = async (req, res, next) => {
         next(err);
     }
 };
-module.exports = { addtoCart, getCartbyID, updateCart };
+module.exports = { addtoCart, getCartbyID, updateCart, deleteCart };
