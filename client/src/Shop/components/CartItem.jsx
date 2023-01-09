@@ -10,8 +10,11 @@ import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../Shared/context/auth-context";
 import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const CartItem = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const auth = useContext(AuthContext);
   const [harga, setHarga] = useState(0);
   const [total, setTotal] = useState(0);
@@ -50,7 +53,6 @@ const CartItem = () => {
 
   const deleteCart = (id) => {
     setItems((prevCart) => prevCart.filter((item) => id !== item._id));
-    console.log(carts);
   };
 
   const getItem = async () => {
@@ -65,12 +67,24 @@ const CartItem = () => {
     }
   };
 
+  const handleClick = async () => {
+    const data = {
+      food: items,
+    };
+    try {
+      await axios.post(`http://localhost:3000/cart/update/${auth.userId}`, data);
+      navigate("/payments", { state: { prevPath: pathname } });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     let totalHarga = 0;
     items.forEach((food) => (totalHarga += food.total_price));
     setHarga(totalHarga);
     setTotal(harga + (5 / 100) * harga);
-  }, [items]);
+  }, [items, harga]);
 
   useEffect(() => {
     getItem();
@@ -194,7 +208,7 @@ const CartItem = () => {
                 </Box>
               </CardContent>
             </Card>
-            <Button variant="contained" sx={{ width: "100%", height: "100%", borderRadius: "0 4px 4px 0", bgcolor: "#ff9f0d", "&:hover": { bgcolor: "#ff9f0d", boxShadow: "none" }, boxShadow: "none" }}>
+            <Button variant="contained" sx={{ width: "100%", height: "100%", borderRadius: "0 4px 4px 0", bgcolor: "#ff9f0d", "&:hover": { bgcolor: "#ff9f0d", boxShadow: "none" }, boxShadow: "none" }} onClick={handleClick}>
               Proceed to Checkout
             </Button>
           </Stack>

@@ -20,7 +20,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 
 import "./Navbar.scss";
 import { Badge } from "@mui/material";
-import { AuthContext } from "../Shared/context/auth-context";
+import { AuthContext } from "../context/auth-context";
 import axios from "axios";
 
 const pages = ["Home", "Shop", "About", "Contact"];

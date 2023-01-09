@@ -139,6 +139,9 @@ const updateCart = async (req, res, next) => {
         for (let i = 0; i < arrayOfFood.length; i++) {
           let newFood = {
             food_id: arrayOfFood[i].food_id,
+            name: arrayOfFood[i].name,
+            rating: arrayOfFood[i].rating,
+            photos: arrayOfFood[i].photos,
             total_food: arrayOfFood[i].total_food,
             total_price: arrayOfFood[i].total_price,
           };

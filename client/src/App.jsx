@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Register from "./Auth/Pages/Register.jsx";
 import Login from "./Auth/Pages/Login.jsx";
 
-import Navbar from "./components/Navbar.jsx";
+import Navbar from "./Shared/components/Navbar.jsx";
 import Home from "./Home/pages/Home.jsx";
 import Page404 from "./Shared/Page404";
 import Shop from "./Shop/Page/Shop";
@@ -11,6 +11,7 @@ import Produk from "./Shop/Page/Produk.jsx";
 import Chef from "./Chef/Page/Chef.jsx";
 import { AuthContext } from "./Shared/context/auth-context.jsx";
 import { useEffect, useState, useCallback } from "react";
+import CheckOut from "./payment/page/CheckOut.jsx";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -46,8 +47,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/payments" element={<CheckOut />} />
           <Route path="/menu/:menuId" element={<Produk />} />
-          <Route path="/shop" element={<Shop />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>
