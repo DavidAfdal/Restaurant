@@ -118,6 +118,7 @@ const addtoCart = async (req, res, next) => {
 };
 const updateCart = async (req, res, next) => {
   const userID = req.params.userID;
+
   try {
     const findUser = await User.findById(userID);
     try {
@@ -131,25 +132,51 @@ const updateCart = async (req, res, next) => {
         },
         { new: true }
       );
-      let finalFood = [];
-      let total_price_cart = 0;
-      const arrayOfFood = req.body.food;
-      for (let i = 0; i < arrayOfFood.length; i++) {
-        let newFood = {
-          food_id: arrayOfFood[i].food_id,
-          name: arrayOfFood[i].name,
-          rating: arrayOfFood[i].rating,
-          photos: arrayOfFood[i].photos,
-          total_food: arrayOfFood[i].total_food,
-          total_price: arrayOfFood[i].total_price,
-        };
+      try {
+        let finalFood = [];
+        let total_price_cart = 0;
+        const arrayOfFood = req.body.food;
+        for (let i = 0; i < arrayOfFood.length; i++) {
+          let newFood = {
+            food_id: arrayOfFood[i].food_id,
+            name: arrayOfFood[i].name,
+            rating: arrayOfFood[i].rating,
+            photos: arrayOfFood[i].photos,
+            total_food: arrayOfFood[i].total_food,
+            total_price: arrayOfFood[i].total_price,
+          };
+          total_price_cart += arrayOfFood[i].total_price;
+          finalFood.push(newFood);
+        }
+
+        const finalCart = await Cart.findByIdAndUpdate(
+          findUser.cart_id,
+          {
+            $set: {
+              food: finalFood,
+              total_price_cart: total_price_cart,
+              status_cart: "On Checkout",
+            },
+          },
+          { new: true }
+        );
+
+        res.status(200).json({
+          message: "succes",
+          data: finalCart,
+        });
+      } catch (error) {
+        console.log("error1");
+        next(error);
       }
-      total_price_cart += arrayOfFood[i].total_price;
-      finalFood.push(newFood);
     } catch (err) {
+      console.log("error2");
+
       next(err);
     }
   } catch (err) {
+    console.log("error3");
+
     next(err);
   }
 };
@@ -171,12 +198,15 @@ const deleteCart = async (req, res, next) => {
             food_id: arrayOfFood[i].food_id,
             total_food: arrayOfFood[i].total_food,
             photos: arrayOfFood[i].photos,
+            name: arrayOfFood[i].name,
+            rating: arrayOfFood[i].rating,
             total_price: arrayOfFood[i].total_price,
           };
           total_price_cart += arrayOfFood[i].total_price;
           finalFood.push(newFood);
         }
       }
+      console.log(finalFood);
       const finalCart = await Cart.findByIdAndUpdate(
         findUser.cart_id,
         {

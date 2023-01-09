@@ -26,6 +26,7 @@ const CartItem = () => {
         const price = item.total_price / item.total_food;
         item.total_food += 1;
         item.total_price = price * item.total_food;
+        console.log(items);
         return item;
       } else {
         return item;
@@ -51,8 +52,15 @@ const CartItem = () => {
     setItems(updatecart);
   };
 
-  const deleteCart = (id) => {
-    setItems((prevCart) => prevCart.filter((item) => id !== item._id));
+  const deleteCart = async (id) => {
+    try {
+      const response = await axios.post(`http://localhost:3000/cart/delete/${auth?.userId}/${id}`);
+      console.log(response.data);
+      console.log(id);
+      setItems((prevCart) => prevCart.filter((item) => id !== item.food_id));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getItem = async () => {
@@ -141,7 +149,7 @@ const CartItem = () => {
                   RP. {cart.total_price}
                 </TableCell>
                 <TableCell sx={{ color: "#232323" }} align="center">
-                  <IconButton onClick={() => deleteCart(cart._id)}>
+                  <IconButton onClick={() => deleteCart(cart.food_id)}>
                     <CloseIcon sx={{ color: "#232323", "&:hover": { color: "#ff9f0d" } }} />
                   </IconButton>
                 </TableCell>

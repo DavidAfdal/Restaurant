@@ -1,14 +1,45 @@
-import { Button, Container, Grid, Stack, TextField, Typography, FormControl, OutlinedInput, ButtonGroup, Card, CardContent, Box, Rating, Divider } from "@mui/material";
+import { Button, Container, Grid, Stack, TextField, Typography, FormControl, OutlinedInput, ButtonGroup, Card, CardContent, Box, Rating, Divider, Select, MenuItem } from "@mui/material";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Shared/context/auth-context";
-import item1 from "../../Shop/assets/Item1.png";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const CheckOutItem = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const auth = useContext(AuthContext);
   const [carts, setCarts] = useState([]);
+  const [discounts, setDiscounts] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
   const [total, setTotal] = useState(0);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [company, setCompany] = useState("");
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [zipCode, setZipCode] = useState(0);
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [getIdDiscount, setGetIdDiscount] = useState("");
+  const [discount, setDiscount] = useState({
+    name: "",
+    id: "",
+    discount: 0,
+    quantity: 0,
+  });
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    console.log(value);
+    setGetIdDiscount(value);
+  };
+
   const getDataCart = async () => {
     try {
       const response = await axios.get(`http://localhost:3000/cart/${auth?.userId}`);
@@ -19,13 +50,53 @@ const CheckOutItem = () => {
     }
   };
 
+  const getDiscount = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/discount/");
+      setDiscounts(response?.data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const applyDiscounts = () => {
+    const discount = discounts.filter((x) => x._id === getIdDiscount);
+    discount.map((discount) =>
+      setDiscount({
+        name: discount.name,
+        discount: discount.discount,
+        id: discount._id,
+        quantity: discount.quantity,
+      })
+    );
+    console.log(discount);
+  };
+
+  const data = {
+    first_name: firstName,
+    last_name: lastName,
+    email,
+    phone_number: phone,
+    company,
+    country,
+    city,
+    zip_code: zipCode,
+    address_1: address1,
+    address_2: address2,
+  };
+
+  const backToCart = () => {
+    navigate("/cart", { state: { prevPath: pathname } });
+  };
+
   useEffect(() => {
     getDataCart();
+    getDiscount();
   }, [auth.userId]);
 
   useEffect(() => {
-    setTotal(subTotal + subTotal * (5 / 100));
-  }, [subTotal]);
+    setTotal(subTotal + subTotal * (5 / 100) - (discount.discount / 100) * subTotal);
+  }, [subTotal, discount]);
 
   return (
     <Container sx={{ py: "100px" }}>
@@ -35,24 +106,24 @@ const CheckOutItem = () => {
             <Stack spacing={2}>
               <Typography sx={{ color: "#232323" }}>Shipping Address</Typography>
               <Stack direction="row" spacing={2}>
-                <TextField id="outlined-basic" label="First Name" variant="outlined" fullWidth />
-                <TextField id="outlined-basic" label="Last Name" variant="outlined" fullWidth />
+                <TextField id="outlined-basic" label="First Name" variant="outlined" fullWidth onChange={(e) => setFirstName(e.target.value)} />
+                <TextField id="outlined-basic" label="Last Name" variant="outlined" fullWidth onChange={(e) => setLastName(e.target.value)} />
               </Stack>
               <Stack direction="row" spacing={2}>
-                <TextField id="outlined-basic" label="Outlined" variant="outlined" fullWidth />
-                <TextField id="outlined-basic" label="Outlined" variant="outlined" fullWidth />
+                <TextField id="outlined-basic" label="Email" variant="outlined" fullWidth onChange={(e) => setEmail(e.target.value)} />
+                <TextField id="outlined-basic" label="Phone Number" variant="outlined" fullWidth onChange={(e) => setPhone(e.target.value)} />
               </Stack>
               <Stack direction="row" spacing={2}>
-                <TextField id="outlined-basic" label="Outlined" variant="outlined" fullWidth />
-                <TextField id="outlined-basic" label="Outlined" variant="outlined" fullWidth />
+                <TextField id="outlined-basic" label="Company" variant="outlined" fullWidth onChange={(e) => setCompany(e.target.value)} />
+                <TextField id="outlined-basic" label="Country" variant="outlined" fullWidth onChange={(e) => setCountry(e.target.value)} />
               </Stack>
               <Stack direction="row" spacing={2}>
-                <TextField id="outlined-basic" label="Outlined" variant="outlined" fullWidth />
-                <TextField id="outlined-basic" label="Outlined" variant="outlined" fullWidth />
+                <TextField id="outlined-basic" label="City" variant="outlined" fullWidth onChange={(e) => setCity(e.target.value)} />
+                <TextField id="outlined-basic" label="Zip Code" variant="outlined" fullWidth onChange={(e) => setZipCode(e.target.value)} />
               </Stack>
               <Stack direction="row" spacing={2}>
-                <TextField id="outlined-basic" label="Outlined" variant="outlined" fullWidth />
-                <TextField id="outlined-basic" label="Outlined" variant="outlined" fullWidth />
+                <TextField id="outlined-basic" label="Adress 1" variant="outlined" fullWidth onChange={(e) => setAddress1(e.target.value)} />
+                <TextField id="outlined-basic" label="Adress 2" variant="outlined" fullWidth onChange={(e) => setAddress2(e.target.value)} />
               </Stack>
               <Stack direction="column">
                 <Box sx={{ mt: 2 }}>
@@ -66,8 +137,21 @@ const CheckOutItem = () => {
                       </Typography>
                       <FormControl sx={{ display: "flex", mt: 2 }} variant="outlined">
                         <ButtonGroup>
-                          <OutlinedInput id="outlined-adornment-weight" sx={{ width: "100%", borderRadius: "4px 0 0 4px" }} placeholder="Enter Here code" />
-                          <Button variant="contained" sx={{ width: "20%", borderRadius: "0 4px 4px 0", bgcolor: "#ff9f0d", "&:hover": { bgcolor: "#ff9f0d", boxShadow: "none" }, boxShadow: "none" }}>
+                          <Select
+                            labelId="demo-multiple-name-label"
+                            id="demo-multiple-name"
+                            value={getIdDiscount}
+                            onChange={handleChange}
+                            input={<OutlinedInput placeholder="Enter Here code" sx={{ width: "100%", borderRadius: "4px 0 0 4px" }} />}
+                          >
+                            {discounts.map((discount) => (
+                              <MenuItem key={discount._id} value={discount._id}>
+                                {discount.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+
+                          <Button variant="contained" sx={{ width: "20%", borderRadius: "0 4px 4px 0", bgcolor: "#ff9f0d", "&:hover": { bgcolor: "#ff9f0d", boxShadow: "none" }, boxShadow: "none" }} onClick={applyDiscounts}>
                             Apply
                           </Button>
                         </ButtonGroup>
@@ -76,6 +160,15 @@ const CheckOutItem = () => {
                   </Card>
                 </Box>
               </Stack>
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{ bgcolor: "#ff9f0d", color: "#fff", boxShadow: "none", "&:hover": { bgcolor: "#ff9f0d", boxShadow: "none" }, textTransform: "none", display: { xs: "none", md: "flex" } }}
+                onClick={backToCart}
+              >
+                <ArrowBackIosIcon fontSize="small" />
+                Back to cart
+              </Button>
             </Stack>
           </Grid>
 
@@ -109,7 +202,7 @@ const CheckOutItem = () => {
                   </Box>
                   <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Typography>Discount</Typography>
-                    <Typography>Rp. 0 </Typography>
+                    <Typography>{discount.discount} %</Typography>
                   </Box>
                   <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Typography>Tax (5%) </Typography>
@@ -120,9 +213,22 @@ const CheckOutItem = () => {
                     <Typography>Total</Typography>
                     <Typography>Rp. {total}</Typography>
                   </Box>
+                  <Button sx={{ display: "flex", alignItems: "center", bgcolor: "#ff9f0d", "&:hover": { bgcolor: "#ff9f0d" }, textTransform: "none", gap: "5px" }} variant="contained">
+                    Place an Order
+                    <ArrowForwardIcon sx={{ color: "#fff" }} fontSize="small" />
+                  </Button>
                 </Stack>
               </CardContent>
             </Card>
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{ bgcolor: "#ff9f0d", color: "#fff", boxShadow: "none", "&:hover": { bgcolor: "#ff9f0d", boxShadow: "none" }, textTransform: "none", display: { xs: "flex", md: "none" }, mt: 2 }}
+              onClick={backToCart}
+            >
+              <ArrowBackIosIcon fontSize="small" />
+              Back to cart
+            </Button>
           </Grid>
         </Grid>
       </form>

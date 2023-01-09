@@ -28,8 +28,8 @@ const ShopItem = () => {
   const [page, setPage] = useState(1);
   const [price, setPrice] = useState(200000);
   const [isLoading, setIsLoading] = useState(false);
-  const sortBy = ["rating", "name", "Latest"];
-  const showBy = ["Asc", "Desc"];
+  const sortBy = ["rating", "name"];
+  const showBy = ["Newest", "Lastest"];
   const checkbox = ["Sandwiches", "Burger", "Chicken Chup", "Drink", "Pizza", "Thi", "Non Veg"];
   const [category, setCategory] = useState([]);
 
