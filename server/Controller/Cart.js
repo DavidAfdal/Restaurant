@@ -66,7 +66,7 @@ const addtoCart = async (req, res, next) => {
                     "food.$.total_price": newTotalprice,
                     "food.$.photos": findFoodId.photos,
                     "food.$.name": findFoodId.name,
-                    "food.$.name": findFoodId.rating,
+                    "food.$.rating": findFoodId.rating,
                     status_cart: "On Cart",
                   },
                   $inc: { total_price_cart: req.body.total_price },

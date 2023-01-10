@@ -97,7 +97,7 @@ const ShopItem = () => {
       } catch (error) {
         console.log(error);
       }
-      setIsLoading(false);
+      setInterval(() => setIsLoading(false), 3000);
     },
     [search, page, show, sort]
   );

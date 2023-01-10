@@ -66,7 +66,7 @@ const CartItem = () => {
   const getItem = async () => {
     try {
       const cart = await axios.get(`http://localhost:3000/cart/${auth.userId}`);
-      console.log(cart);
+      console.log(cart.data.data);
       setItems(cart?.data?.data?.food);
       setTotal(cart?.data?.data?.total_price_cart);
     } catch (error) {

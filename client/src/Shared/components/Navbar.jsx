@@ -72,7 +72,7 @@ const Navbar = () => {
 
   useEffect(() => {
     cartItem();
-  }, [auth?.userId]);
+  }, [auth.userId, itemCart]);
 
   return (
     <div>
