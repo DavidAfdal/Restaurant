@@ -34,6 +34,7 @@ const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [path, setPath] = useState("");
   const [itemCart, setItemCart] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleOpenNavMenu = () => {
     setAnchorElNav(true);
@@ -59,6 +60,13 @@ const Navbar = () => {
     navigate("/");
   };
 
+  const handleNavigatePage = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
+  };
+
   const cartItem = async () => {
     try {
       const cart = await axios.get(`http://localhost:3000/cart/${auth?.userId}`);
@@ -74,7 +82,13 @@ const Navbar = () => {
     cartItem();
   }, [auth.userId, itemCart]);
 
-  return (
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
+  }, []);
+
+  return isLoading ? null : (
     <div>
       <AppBar position="relative" sx={{ backgroundColor: "#0D0D0D" }} style={{ zIndex: 100 }} elevation={path === "Home" ? 0 : 12}>
         <Container maxWidth="lg">
@@ -108,7 +122,7 @@ const Navbar = () => {
               {pages.map((page) => (
                 <ul key={page} className="nav_list">
                   <li>
-                    <Link to={page !== "Home" ? `/${page}` : "/"} state={{ prevPath: pathname }} className="nav_link">
+                    <Link to={page !== "Home" ? `/${page}` : "/"} state={{ prevPath: pathname }} className="nav_link" onClick={handleNavigatePage}>
                       {page}
                     </Link>
                   </li>
@@ -204,7 +218,7 @@ const Navbar = () => {
         <ul className="nav_list_drawer">
           {pages.map((page) => (
             <li key={page} style={{ marginBottom: "10px" }}>
-              <Link to={page !== "Home" ? `/${page}` : "/"} state={{ prevPath: pathname }} className="nav_link">
+              <Link to={page !== "Home" ? `/${page}` : "/"} state={{ prevPath: pathname }} className="nav_link" onClick={handleNavigatePage}>
                 {page}
               </Link>
             </li>

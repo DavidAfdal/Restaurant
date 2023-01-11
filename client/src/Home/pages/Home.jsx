@@ -1,5 +1,6 @@
 import Hero from "../components/Hero";
-import React from "react";
+import React, { useState } from "react";
+import { Container, Box, CircularProgress } from "@mui/material";
 
 import "./Home.scss";
 import BestFood from "../components/BestFood";
@@ -11,9 +12,23 @@ import OurChef from "../components/OurChef";
 import Testimoni from "../components/Testimoni";
 import Creative from "../components/Creative";
 import Blog from "../components/Blog";
+import { useEffect } from "react";
 
 const Home = () => {
-  return (
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
+  }, []);
+  return isLoading ? (
+    <Container maxWidth="lg" sx={{ py: "250px", height: "100vh" }}>
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <CircularProgress sx={{ color: "#ff9f0d" }} size={70} />
+      </Box>
+    </Container>
+  ) : (
     <>
       <Hero />
       <BestFood />

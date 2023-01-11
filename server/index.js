@@ -7,8 +7,8 @@ const userRouter = require("./routes/user");
 const cartRouter = require("./routes/cart");
 const foodRouter = require("./routes/food");
 const reviewRouter = require("./routes/review");
-const shippingRouter = require("./routes/shipping")
-const discRouter = require('./routes/discount')
+const shippingRouter = require("./routes/shipping");
+const discRouter = require("./routes/discount");
 const cors = require("cors");
 
 const app = express();
@@ -29,6 +29,7 @@ mongoose.connection.on("disconnected", () => {
 app.use(cors());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
+
 // parse application/json
 app.use(bodyParser.json());
 
@@ -39,7 +40,6 @@ app.use("/user", userRouter);
 app.use("/cart", cartRouter);
 app.use("/shipping", shippingRouter);
 app.use("/discount", discRouter);
-
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
