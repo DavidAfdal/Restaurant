@@ -1,11 +1,6 @@
 import { Container, Grid, Typography, Rating, FormControl, OutlinedInput, Button, ButtonGroup, IconButton, TableRow, TableContainer, TableCell, TableBody, Table, TableHead, Card, CardContent, Stack, Divider, Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import item1 from "../assets/Item1.png";
-import item2 from "../assets/Item2.png";
-import item3 from "../assets/Item3.png";
-import item4 from "../assets/Item4.png";
-import item5 from "../assets/Item5.png";
-import item6 from "../assets/Item6.png";
+import animationCart from "../assets/aniCart.gif";
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../Shared/context/auth-context";
@@ -98,7 +93,7 @@ const CartItem = () => {
     getItem();
   }, [auth.userId]);
 
-  return (
+  return items.length > 0 ? (
     <Container maxWidth="lg" sx={{ py: "100px", height: "100%" }}>
       <TableContainer>
         <Table>
@@ -160,26 +155,6 @@ const CartItem = () => {
       </TableContainer>
 
       <Grid container spacing={4} sx={{ mt: 4 }} direction="row-reverse">
-        {/* <Grid item lg={6} xs={12}>
-          <Typography variant="h4" sx={{ color: "#232323", mb: 2 }}>
-            Coupon Code
-          </Typography>
-          <Card sx={{ border: "1px solid #E0E0E0" }} variant="outlined">
-            <CardContent sx={{ display: "flex", flexDirection: "column" }}>
-              <Typography variant="p" sx={{ color: "#232323", opacity: "0.75" }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque diam pellentesque bibendum non
-              </Typography>
-              <FormControl sx={{ display: "flex", mt: 2 }} variant="outlined">
-                <ButtonGroup>
-                  <OutlinedInput id="outlined-adornment-weight" sx={{ width: "100%", borderRadius: "4px 0 0 4px" }} placeholder="Enter Here code" />
-                  <Button variant="contained" sx={{ width: "20%", borderRadius: "0 4px 4px 0", bgcolor: "#ff9f0d", "&:hover": { bgcolor: "#ff9f0d", boxShadow: "none" }, boxShadow: "none" }}>
-                    Apply
-                  </Button>
-                </ButtonGroup>
-              </FormControl>
-            </CardContent>
-          </Card>
-        </Grid> */}
         <Grid item lg={6} xs={12}>
           <Stack spacing={2}>
             <Typography variant="h4" sx={{ color: "#232323" }}>
@@ -222,6 +197,18 @@ const CartItem = () => {
           </Stack>
         </Grid>
       </Grid>
+    </Container>
+  ) : (
+    <Container maxWidth="lg" sx={{ py: "50px" }}>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
+          <Typography sx={{ color: "#232323", fontSize: "36px", mt: 4 }}>Your Cart Is Empty</Typography>
+          <img src={animationCart} width="80%" height="80%" />
+          {/* <Button variant="contained" sx={{ bgcolor: "#ff9f0d", "&:hover": { bgcolor: "#ff9f0d" }, textTransform: "none" }} size="large">
+            Go to The Shop
+          </Button> */}
+        </Box>
+      </Box>
     </Container>
   );
 };
