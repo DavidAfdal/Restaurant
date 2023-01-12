@@ -30,7 +30,9 @@ const Footer = () => {
             <Grid container justifyContent="space-between">
               <Grid item xs={12} lg={7}>
                 <Stack spacing={2}>
-                  <Typography sx={{ fontSize: "32px" }}>Still You Need Our Support ?</Typography>
+                  <Typography sx={{ fontSize: "32px", fontWeight: "bold" }}>
+                    <span style={{ color: "#ff9f0d" }}>St</span>ill You Need Our Support ?
+                  </Typography>
                   <Typography sx={{ fontSize: "16px" }}>Don't wait make a smart & logical quote here. Its pretty easy.</Typography>
                 </Stack>
               </Grid>

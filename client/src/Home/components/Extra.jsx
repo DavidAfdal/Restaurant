@@ -1,10 +1,13 @@
-import { Container, Grid, Typography, Stack } from "@mui/material";
+import { Container, Grid, Typography, Stack, Box } from "@mui/material";
 import extra1 from "../assets/extra1.png";
 import extra2 from "../assets/extra2.png";
 import extra3 from "../assets/extra3.png";
 import extra4 from "../assets/extra4.png";
 import extra5 from "../assets/extra5.png";
 import extra6 from "../assets/item2.png";
+import cookies from "../assets/icon/Cookie (1).png";
+import hambuger from "../assets/icon/Hamburger.png";
+import wine from "../assets/icon/Wine.png";
 
 import React from "react";
 
@@ -41,7 +44,7 @@ const Extra = () => {
           </Grid>
         </Grid>
 
-        <Grid item lg={6}>
+        <Grid item lg={6} sx={{ pl: { lg: "3rem !important" } }}>
           <Stack spacing={2}>
             <Typography
               variant="h5"
@@ -59,7 +62,7 @@ const Extra = () => {
                 fontFamily: "Helvetica",
                 fontWeight: 700,
                 color: "#fff",
-                lineHeight: "68px",
+                lineHeight: "50px",
               }}
             >
               <span style={{ color: "#ff9f0d" }}>Ex</span>tra ordinary taste And Experienced
@@ -71,14 +74,42 @@ const Extra = () => {
                 fontWeight: 400,
                 color: "#fff",
                 opacity: "0.75",
+                fontSize: "18px",
+                textAlign: "justify",
               }}
             >
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque diam pellentesque bibendum non dui volutpat fringilla bibendum. Urna, elit augue urna, vitae feugiat pretium donec id elementum. Ultrices mattis sed vitae mus
               risus. Lacus nisi, et ac dapibus sit eu velit in consequat.
             </Typography>
-            <Stack direction="row" spacing={2}>
-              <Stack></Stack>
+
+            <Stack direction="row" spacing={3} sx={{ mt: "30px !important" }}>
+              <Stack alignItems="center">
+                <Box sx={{ bgcolor: "#ff9f0d", p: 2, borderRadius: "4px" }}>
+                  <img src={hambuger} width="60px" />
+                </Box>
+                <Typography sx={{ fontSize: "16px", mt: 2 }}>Fast Food</Typography>
+              </Stack>
+              <Stack alignItems="center">
+                <Box sx={{ bgcolor: "#ff9f0d", p: 2, borderRadius: "4px" }}>
+                  <img src={cookies} width="60px" />
+                </Box>
+                <Typography sx={{ fontSize: "16px", mt: 2 }}>Lunch</Typography>
+              </Stack>
+              <Stack alignItems="center">
+                <Box sx={{ bgcolor: "#ff9f0d", p: 2, borderRadius: "4px" }}>
+                  <img src={wine} width="60px" />
+                </Box>
+                <Typography sx={{ fontSize: "16px", mt: 2 }}>Dinner</Typography>
+              </Stack>
             </Stack>
+
+            <Box sx={{ display: "flex", bgcolor: "#fff", maxWidth: "50%", px: 2, py: 1, borderRadius: "4px", alignItems: "center", position: "relative", mt: "20px !important" }}>
+              <Typography sx={{ fontSize: "42px", color: "#ff9f0d", fontWeight: "bold" }}>30+</Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", ml: 3, mr: "auto" }}>
+                <Typography sx={{ color: "#232323" }}>Years of</Typography>
+                <Typography sx={{ color: "#232323", fontWeight: "bold", fontSize: "18px" }}>Experienced</Typography>
+              </Box>
+            </Box>
           </Stack>
         </Grid>
       </Grid>
