@@ -39,7 +39,6 @@ const Home = () => {
       <OurChef />
       <Testimoni />
       <Creative />
-      <Blog />
     </>
   );
 };

@@ -68,13 +68,15 @@ const Navbar = () => {
   };
 
   const cartItem = async () => {
-    try {
-      const cart = await axios.get(`http://localhost:3000/cart/${auth?.userId}`);
-      setItemCart(cart?.data?.data?.food?.length);
-      console.log(cart);
-    } catch (error) {
-      console.log(error);
-      setItemCart(0);
+    if (auth.userId !== null) {
+      try {
+        const cart = await axios.get(`http://localhost:3000/cart/${auth?.userId}`);
+        setItemCart(cart?.data?.data?.food?.length);
+        console.log(cart);
+      } catch (error) {
+        console.log(error);
+        setItemCart(0);
+      }
     }
   };
 

@@ -1,4 +1,4 @@
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, Typography, Stack } from "@mui/material";
 import extra1 from "../assets/extra1.png";
 import extra2 from "../assets/extra2.png";
 import extra3 from "../assets/extra3.png";
@@ -42,7 +42,44 @@ const Extra = () => {
         </Grid>
 
         <Grid item lg={6}>
-          <h1>Hello world</h1>
+          <Stack spacing={2}>
+            <Typography
+              variant="h5"
+              sx={{
+                fontFamily: "Inter",
+                fontWeight: 400,
+                color: "#ff9f0d",
+              }}
+            >
+              Why Choose us
+            </Typography>
+            <Typography
+              variant="h4"
+              sx={{
+                fontFamily: "Helvetica",
+                fontWeight: 700,
+                color: "#fff",
+                lineHeight: "68px",
+              }}
+            >
+              <span style={{ color: "#ff9f0d" }}>Ex</span>tra ordinary taste And Experienced
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                fontFamily: "Inter",
+                fontWeight: 400,
+                color: "#fff",
+                opacity: "0.75",
+              }}
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque diam pellentesque bibendum non dui volutpat fringilla bibendum. Urna, elit augue urna, vitae feugiat pretium donec id elementum. Ultrices mattis sed vitae mus
+              risus. Lacus nisi, et ac dapibus sit eu velit in consequat.
+            </Typography>
+            <Stack direction="row" spacing={2}>
+              <Stack></Stack>
+            </Stack>
+          </Stack>
         </Grid>
       </Grid>
     </Container>

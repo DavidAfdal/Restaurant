@@ -12,6 +12,7 @@ import Chef from "./Chef/Page/Chef.jsx";
 import { AuthContext } from "./Shared/context/auth-context.jsx";
 import { useEffect, useState, useCallback } from "react";
 import CheckOut from "./payment/page/CheckOut.jsx";
+import Footer from "./Shared/components/Footer.jsx";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -51,6 +52,7 @@ function App() {
           <Route path="/menu/:menuId" element={<Produk />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </AuthContext.Provider>
   );
