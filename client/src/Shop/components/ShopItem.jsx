@@ -226,7 +226,7 @@ const ShopItem = () => {
             <Skeleton variant="rectangular" width="100%" height={180} />
           ) : menus != null ? (
             <Box sx={{ position: "relative", m: 2, display: { xs: "none", lg: "flex" } }}>
-              <Box component="img" src={menus[randomIndex]?.photos[0]?.url} width="100%" height="280px" sx={{ display: { xs: "none", md: "flex" } }} />
+              <Box component="img" src={menus[randomIndex]?.photos[0]?.url} width="100%" height="100%" sx={{ display: { xs: "none", md: "flex" } }} />
               <Box sx={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0, 0, 0, 0.611)" }} />
               <Box sx={{ position: "absolute", top: "0", left: "0", width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                 <Box sx={{ display: "flex", flexDirection: "column", m: 2 }}>
