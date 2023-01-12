@@ -53,6 +53,10 @@ const Navbar = () => {
 
   const handleCartClick = () => {
     navigate("/Cart", { state: { prevPath: pathname } });
+    setIsLoading(true);
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
 
   const logoutHandler = () => {

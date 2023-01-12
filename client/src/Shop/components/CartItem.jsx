@@ -1,4 +1,27 @@
-import { Container, Grid, Typography, Rating, FormControl, OutlinedInput, Button, ButtonGroup, IconButton, TableRow, TableContainer, TableCell, TableBody, Table, TableHead, Card, CardContent, Stack, Divider, Box } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Typography,
+  Rating,
+  FormControl,
+  OutlinedInput,
+  Button,
+  ButtonGroup,
+  IconButton,
+  TableRow,
+  TableContainer,
+  TableCell,
+  TableBody,
+  Table,
+  TableHead,
+  Card,
+  CardContent,
+  Stack,
+  Divider,
+  Box,
+  CircularProgress,
+} from "@mui/material";
+
 import CloseIcon from "@mui/icons-material/Close";
 import animationCart from "../assets/aniCart.gif";
 import React, { useEffect, useState } from "react";
@@ -14,6 +37,7 @@ const CartItem = () => {
   const [harga, setHarga] = useState(0);
   const [total, setTotal] = useState(0);
   const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const countUp = (id) => {
     let updatecart = items.filter((item) => {
