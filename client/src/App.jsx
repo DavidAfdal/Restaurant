@@ -48,10 +48,6 @@ function App() {
     }
   }, [login]);
 
-  useEffect(() => {
-    adminLogin();
-  }, [adminLogin]);
-
   let router;
 
   if (isAdmin) {
