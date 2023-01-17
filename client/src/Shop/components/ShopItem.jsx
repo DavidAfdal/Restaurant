@@ -3,7 +3,6 @@ import { Box, Stack, Container, Select, FormControl, MenuItem, Typography, Grid,
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ItemMenu } from "../Dummydata";
 import axios from "axios";
 import { useCallback } from "react";
 
@@ -17,7 +16,7 @@ const ShopItem = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [randomIndex, setRandomIndex] = useState(0);
   const [filterMenu, setFilterMenu] = useState([]);
-
+  
   const [search, setSearch] = useState({
     menuFilter: [],
     searching: "",

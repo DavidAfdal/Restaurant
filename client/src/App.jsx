@@ -14,9 +14,11 @@ import { useEffect, useState, useCallback } from "react";
 
 import CheckOut from "./payment/page/CheckOut.jsx";
 import Footer from "./Shared/components/Footer.jsx";
+import AdminPage from "./Admin/page/AdminPage.jsx";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
+  const [isAdmin, SetIsAdmin] = useState(false);
   const [userId, setUserId] = useState(null);
 
   const login = useCallback((uId) => {
@@ -31,6 +33,14 @@ function App() {
     localStorage.removeItem("userData");
   }, []);
 
+  const adminLogin = useCallback(() => {
+    SetIsAdmin(true);
+  }, []);
+
+  const adminLogout = () => {
+    SetIsAdmin(false);
+  };
+
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("userData"));
     if (storedData) {
@@ -38,8 +48,23 @@ function App() {
     }
   }, [login]);
 
-  return (
-    <AuthContext.Provider value={{ isLoggedIn: !!isLogin, userId, login, logout }}>
+  useEffect(() => {
+    adminLogin();
+  }, [adminLogin]);
+
+  let router;
+
+  if (isAdmin) {
+    console.log(isAdmin);
+    router = (
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<AdminPage />} />;
+        </Routes>
+      </BrowserRouter>
+    );
+  } else {
+    router = (
       <BrowserRouter>
         <Navbar />
         <Routes>
@@ -55,8 +80,10 @@ function App() {
         </Routes>
         <Footer />
       </BrowserRouter>
-    </AuthContext.Provider>
-  );
+    );
+  }
+
+  return <AuthContext.Provider value={{ isLoggedIn: !!isLogin, userId, login, logout, adminLogin, adminLogout, isAdmin }}>{router}</AuthContext.Provider>;
 }
 
 export default App;

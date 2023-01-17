@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button, Card, CardContent, Container, Divider, InputAdornment, TextField, Typography } from "@mui/material";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LockPersonOutlinedIcon from "@mui/icons-material/LockPersonOutlined";
+import { useContext } from "react";
+import { AuthContext } from "../../Shared/context/auth-context";
+import { useNavigate } from "react-router-dom";
 
 const LoginItem = () => {
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (email === "admin" && password === "admin") {
+      auth.adminLogin();
+      navigate("/");
+    } else {
+      print("is Not Admin");
+    }
+  };
   return (
     <Container maxWidth="lg" sx={{ py: "100px", height: "100%" }}>
       <Box component="div" sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}>
@@ -12,9 +28,11 @@ const LoginItem = () => {
             <Typography variant="h4" sx={{ fontSize: "18px", fontWeight: "bold" }}>
               Login
             </Typography>
-            <form style={{ display: "flex", flexDirection: "column", gap: "20px", marginTop: "30px" }}>
+            <form style={{ display: "flex", flexDirection: "column", gap: "20px", marginTop: "30px" }} onSubmit={handleClick}>
               <TextField
                 placeholder="Email"
+                type="text"
+                onChange={(e) => setEmail(e.target.value)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -27,6 +45,7 @@ const LoginItem = () => {
               <TextField
                 placeholder="Password"
                 type="password"
+                onChange={(e) => setPassword(e.target.value)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
