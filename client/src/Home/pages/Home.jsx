@@ -11,7 +11,6 @@ import OurMenu from "../components/OurMenu";
 import OurChef from "../components/OurChef";
 import Testimoni from "../components/Testimoni";
 import Creative from "../components/Creative";
-import Blog from "../components/Blog";
 import { useEffect } from "react";
 
 const Home = () => {
@@ -22,7 +21,7 @@ const Home = () => {
       setIsLoading(false);
     }, 300);
   }, []);
-  
+
   return isLoading ? (
     <Container maxWidth="lg" sx={{ py: "250px", height: "100vh" }}>
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
