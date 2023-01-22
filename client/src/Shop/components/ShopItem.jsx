@@ -16,7 +16,7 @@ const ShopItem = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [randomIndex, setRandomIndex] = useState(0);
   const [filterMenu, setFilterMenu] = useState([]);
-  
+
   const [search, setSearch] = useState({
     menuFilter: [],
     searching: "",
@@ -243,6 +243,7 @@ const ShopItem = () => {
             </Box>
           ) : null}
           {/* akhir Rekomendasi Menu */}
+
           {/* filter by price */}
           <Box sx={{ m: 2 }}>
             <Typography variant="p" sx={{ color: "#232323", fontWeight: "bold" }}>
