@@ -1,8 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-
-import Typography from "@mui/material/Typography";
 import NavbarAdmin from "../components/NavbarAdmin";
 import { TextField } from "@mui/material";
 
@@ -13,7 +11,7 @@ const AddDiscountPage = () => {
       <NavbarAdmin />
       <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", px: 3, height: "100vh", pt: 10 }}>
         <form>
-          <TextField type="text" variant="" />
+          <TextField type="text" variant="outlined" />
         </form>
       </Box>
     </Box>

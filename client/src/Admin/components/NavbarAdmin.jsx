@@ -31,12 +31,13 @@ const NavbarAdmin = () => {
       navigate("/adddiscount");
     }
   };
+
   return (
     <>
-      <AppBar position="fixed" sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px`, backgroundColor: "#0D0D0D" }}>
+      <AppBar position="fixed" sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px`, backgroundColor: "transparent" }} elevation={0}>
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            <span style={{ color: "#ff9f0d" }}>Food</span>truck Admin
+          <Typography variant="h6" noWrap component="div" sx={{ color: "#232323" }}>
+            <span style={{ color: "#ff9f0d" }}>Ad</span>min Panel
           </Typography>
         </Toolbar>
       </AppBar>
@@ -46,6 +47,7 @@ const NavbarAdmin = () => {
           flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: drawerWidth,
+            bgcolor: "#0D0D0D",
             boxSizing: "border-box",
           },
         }}
@@ -53,23 +55,32 @@ const NavbarAdmin = () => {
         anchor="left"
       >
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" sx={{ color: "#fff" }}>
             <span style={{ color: "#ff9f0d" }}>Food</span>truck Admin
           </Typography>
         </Toolbar>
         <Divider />
         <List>
           {["Dashboard", "Add Food", "Update Food", "Discount"].map((text, index) => (
-            <ListItem key={text} disablePadding>
+            <ListItem key={text} disablePadding sx={{ color: "#fff" }}>
               <ListItemButton onClick={() => handleClick(text)}>
-                <ListItemIcon>{index === 1 || index == 2 ? index == 1 ? <RestaurantMenuOutlinedIcon /> : <FastfoodOutlinedIcon /> : index === 0 ? <DashboardCustomizeOutlinedIcon /> : <DiscountOutlinedIcon />}</ListItemIcon>
+                <ListItemIcon sx={{ color: "#fff" }}>
+                  {index === 1 || index == 2 ? index == 1 ? <RestaurantMenuOutlinedIcon /> : <FastfoodOutlinedIcon /> : index === 0 ? <DashboardCustomizeOutlinedIcon /> : <DiscountOutlinedIcon />}
+                </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
         <Divider />
-        <Button variant="text" onClick={() => auth.adminLogout()} sx={{ color: "#ff9f0d" }}>
+        <Button
+          variant="text"
+          onClick={() => {
+            auth.adminLogout();
+            navigate("/");
+          }}
+          sx={{ color: "#ff9f0d" }}
+        >
           Logout
         </Button>
       </Drawer>
