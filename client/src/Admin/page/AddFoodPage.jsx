@@ -12,28 +12,16 @@ const AddFoodPage = () => {
 
   const handleFile = (e) => {
     const files = e.target.files;
-    const selectedFiles = Array.from(files);
+    setFile(files);
+  };
+
+  useEffect(() => {
+    const selectedFiles = Array.from(file);
     const imageArray = selectedFiles.map((file) => {
       return URL.createObjectURL(file);
     });
     setPreviewUrl(imageArray);
-    console.log(imageArray);
-    // setFile(files);
-  };
-
-  // useEffect(() => {
-  //   if (!file) {
-  //     return;
-  //   }
-  //   const fileReader = new FileReader();
-  //   fileReader.onload = () => {
-  //     console.log(fileReader.result);
-  //     setPreviewUrl(fileReader.result);
-  //   };
-
-  //   fileReader.readAsDataURL(file);
-  // }, [file]);
-
+  }, [previewUrl]);
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -41,40 +29,45 @@ const AddFoodPage = () => {
       <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", px: 3, height: "100vh", pt: 10 }}>
         <Typography sx={{ color: "#232323", fontSize: "2rem" }}>Penambahan Food</Typography>
         <form encType="multipart/form-data">
-          <Stack spacing={2} sx={{ mt: 2 }}>
-            <Stack direction={{ md: "row", xs: "column" }} spacing={2} flexWrap="nowrap">
-              <TextField id="outlined-basic" label="Nama Makanan" variant="outlined" fullWidth />
-              <TextField id="outlined-basic" label="Harga Makanan" variant="outlined" fullWidth />
-            </Stack>
-            <Stack direction={{ md: "row", xs: "column" }} spacing={2}>
-              <TextField id="outlined-basic" label="Outlined" variant="outlined" fullWidth />
-              <TextField id="outlined-basic" label="Outlined" variant="outlined" fullWidth />
-            </Stack>
-            <Stack direction={{ md: "row", xs: "column" }} spacing={2}>
-              <TextField id="outlined-basic" label="Description" variant="outlined" fullWidth minRows={6} maxRows={10} multiline />
-              <TextField id="outlined-basic" label="Long Description" variant="outlined" fullWidth minRows={6} maxRows={10} multiline />
-            </Stack>
+          <Grid container spacing={2}>
+            <Grid item xs={7}>
+              <Stack spacing={2} sx={{ mt: 2 }}>
+                <Stack direction={{ md: "row", xs: "column" }} spacing={2} flexWrap="nowrap">
+                  <TextField id="outlined-basic" label="Nama Makanan" variant="outlined" fullWidth />
+                  <TextField id="outlined-basic" label="Harga Makanan" variant="outlined" fullWidth />
+                </Stack>
+                <Stack direction={{ md: "row", xs: "column" }} spacing={2}>
+                  <TextField id="outlined-basic" label="Outlined" variant="outlined" fullWidth />
+                  <TextField id="outlined-basic" label="Outlined" variant="outlined" fullWidth />
+                </Stack>
+                <Stack direction={{ md: "row", xs: "column" }} spacing={2}>
+                  <TextField id="outlined-basic" label="Description" variant="outlined" fullWidth minRows={6} maxRows={15} multiline />
+                  <TextField id="outlined-basic" label="Long Description" variant="outlined" fullWidth minRows={6} maxRows={15} multiline />
+                </Stack>
+                <Button variant="contained" component="span" sx={{ bgcolor: "#ff9f0d", color: "#fff", "&:hover": { bgcolor: "#ff9f0d" } }} onClick={() => console.log(previewUrl)}>
+                  Upload
+                </Button>
+              </Stack>
+            </Grid>
+            <Grid item xs={4}>
+              <Stack spacing={2}>
+                <input style={{ display: "none" }} id="raised-button-file" multiple type="file" onChange={handleFile} />
+                <label htmlFor="raised-button-file">
+                  <Button variant="raised" component="span" sx={{ bgcolor: "#ff9f0d", color: "#fff", "&:hover": { bgcolor: "#ff9f0d" } }}>
+                    Add Image
+                  </Button>
+                </label>
 
-            <Stack spacing={2} sx={{ width: "100%" }}>
-              {previewUrl
-                ? previewUrl.map((file, i) => {
-                    <Box key={i}>
-                      <img src={file} alt={file} style={{ width: "100px", height: "100px" }} />;
-                    </Box>;
-                  })
-                : null}
-            </Stack>
-
-            <input style={{ display: "none" }} id="raised-button-file" multiple type="file" onChange={handleFile} />
-            <label htmlFor="raised-button-file">
-              <Button variant="raised" component="span" sx={{ bgcolor: "#ff9f0d", color: "#fff" }}>
-                Upload
-              </Button>
-            </label>
-            <Button variant="contained" component="span" sx={{ bgcolor: "#ff9f0d", color: "#fff" }} onClick={() => console.log(previewUrl)}>
-              Upload
-            </Button>
-          </Stack>
+                <Grid container spacing={2}>
+                  {previewUrl?.map((file, index) => (
+                    <Grid item xs={6} md={3} key={index}>
+                      <img src={file} alt={file} width="100%" height="100%" />;
+                    </Grid>
+                  ))}
+                </Grid>
+              </Stack>
+            </Grid>
+          </Grid>
         </form>
       </Box>
     </Box>

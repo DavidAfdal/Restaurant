@@ -13,11 +13,24 @@ import FastfoodOutlinedIcon from "@mui/icons-material/FastfoodOutlined";
 import Toolbar from "@mui/material/Toolbar";
 import { useContext } from "react";
 import { AuthContext } from "../../Shared/context/auth-context";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
 const NavbarAdmin = () => {
   const auth = useContext(AuthContext);
+  const navigate = useNavigate();
+  const handleClick = (value) => {
+    if (value === "Dashboard") {
+      navigate("/");
+    } else if (value === "Add Food") {
+      navigate("/addfood");
+    } else if (value === "Update Food") {
+      navigate("/updatefood");
+    } else if (value === "Discount") {
+      navigate("/adddiscount");
+    }
+  };
   return (
     <>
       <AppBar position="fixed" sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px`, backgroundColor: "#0D0D0D" }}>
@@ -46,9 +59,9 @@ const NavbarAdmin = () => {
         </Toolbar>
         <Divider />
         <List>
-          {["Dashboard", "Add Product", "Update Product", "Discount"].map((text, index) => (
+          {["Dashboard", "Add Food", "Update Food", "Discount"].map((text, index) => (
             <ListItem key={text} disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={() => handleClick(text)}>
                 <ListItemIcon>{index === 1 || index == 2 ? index == 1 ? <RestaurantMenuOutlinedIcon /> : <FastfoodOutlinedIcon /> : index === 0 ? <DashboardCustomizeOutlinedIcon /> : <DiscountOutlinedIcon />}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>

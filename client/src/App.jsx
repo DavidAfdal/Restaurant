@@ -84,7 +84,8 @@ function App() {
         <Routes>
           <Route path="/" element={<AdminPage />} />
           <Route path="/addfood" element={<AddFoodPage />} />
-          <Route path="/adddicount" element={<AddDiscountPage />} />
+          <Route path="/adddiscount" element={<AddDiscountPage />} />
+          <Route path="*" element={<AdminPage />} />
         </Routes>
       </BrowserRouter>
     );
