@@ -15,6 +15,8 @@ import { useEffect, useState, useCallback } from "react";
 import CheckOut from "./payment/page/CheckOut.jsx";
 import Footer from "./Shared/components/Footer.jsx";
 import AdminPage from "./Admin/page/AdminPage.jsx";
+import AddFoodPage from "./Admin/page/AddFoodPage.jsx";
+import AddDiscountPage from "./Admin/page/AddDiscountPage.jsx";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -34,10 +36,12 @@ function App() {
   }, []);
 
   const adminLogin = useCallback(() => {
+    localStorage.setItem("admin", JSON.stringify({ name: "admin", password: "admin" }));
     SetIsAdmin(true);
   }, []);
 
   const adminLogout = () => {
+    localStorage.removeItem("admin");
     SetIsAdmin(false);
   };
 
@@ -48,33 +52,40 @@ function App() {
     }
   }, [login]);
 
-  let router;
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("admin"));
+    if (storedData) {
+      adminLogin();
+    }
+  }, [adminLogin]);
+
+  let router = (
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/chef" element={<Chef />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/payments" element={<CheckOut />} />
+        <Route path="/menu/:menuId" element={<Produk />} />
+        <Route path="*" element={<Page404 />} />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
+  );
 
   if (isAdmin) {
     console.log(isAdmin);
     router = (
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<AdminPage />} />;
+          <Route path="/" element={<AdminPage />} />
+          <Route path="/addfood" element={<AddFoodPage />} />
+          <Route path="/adddicount" element={<AddDiscountPage />} />
         </Routes>
-      </BrowserRouter>
-    );
-  } else {
-    router = (
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/chef" element={<Chef />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/payments" element={<CheckOut />} />
-          <Route path="/menu/:menuId" element={<Produk />} />
-          <Route path="*" element={<Page404 />} />
-        </Routes>
-        <Footer />
       </BrowserRouter>
     );
   }
