@@ -9,7 +9,7 @@ const AddDiscountPage = () => {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <NavbarAdmin />
-      <Box component="main" sx={{ flexGrow: 1, bgcolor: "background.default", px: 3, height: "100vh", pt: 10 }}>
+      <Box component="main" sx={{ flexGrow: 1, bgcolor: "#E8E8E8", px: 3, height: "100vh", pt: 10 }}>
         <form>
           <TextField type="text" variant="outlined" />
         </form>

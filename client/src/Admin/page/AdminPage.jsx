@@ -4,7 +4,11 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 import Typography from "@mui/material/Typography";
 import NavbarAdmin from "../components/NavbarAdmin";
-import { Grid, Paper, Stack } from "@mui/material";
+import { Grid, Paper, Rating, Stack } from "@mui/material";
+
+import Chart from "chart.js/auto";
+import { Bar, Pie } from "react-chartjs-2";
+import { ItemMenu } from "../../Shop/Dummydata";
 
 const AdminPage = () => {
   const panel = [
@@ -21,6 +25,20 @@ const AdminPage = () => {
       jumlah: 60,
     },
   ];
+
+  const labels = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: "Data Penjualan makanan",
+        backgroundColor: "#ff9f0d",
+        borderColor: "rgb(255, 99, 132)",
+        data: [0, 10, 5, 2, 20, 30, 45, 20, 25, 10, 5, 8],
+      },
+    ],
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -39,20 +57,36 @@ const AdminPage = () => {
               </Grid>
             ))}
           </Grid>
-          <Paper sx={{ p: 2 }}>
-            <Typography paragraph>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-              imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit adipiscing
-              bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-              vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien faucibus et molestie ac.
-            </Typography>
-            <Typography paragraph>
-              Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-              tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-              gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-              eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-            </Typography>
-          </Paper>
+          <Grid container spacing={2}>
+            <Grid item lg={7} xs={12}>
+              <Paper sx={{ p: 2 }}>
+                <Bar data={data} style={{ width: "100%", height: "100%" }} />
+              </Paper>
+            </Grid>
+            <Grid item lg={5} xs={12}>
+              <Paper sx={{ p: 2 }}>
+                <Stack rowGap={2}>
+                  <Typography sx={{ color: "#232323", fontSize: "2rem" }}>
+                    <span style={{ color: "#ff9f0d" }}>Fav</span>orit Menu
+                  </Typography>
+                  {ItemMenu.map((item) => (
+                    <Grid container spacing={2} key={item.id}>
+                      <Grid item xs={2}>
+                        <img src={item.thumbImg} alt={item.name} width="100%" height="100%" />
+                      </Grid>
+                      <Grid item xs={10}>
+                        <Stack justifyContent="center" alignItems="flex-start">
+                          <Typography sx={{ color: "#232323", fontWeight: "bold" }}>{item.name}</Typography>
+                          <Rating readOnly value={item.rating} />
+                          <Typography sx={{ color: "#232323" }}>Rp. {item.price}</Typography>
+                        </Stack>
+                      </Grid>
+                    </Grid>
+                  ))}
+                </Stack>
+              </Paper>
+            </Grid>
+          </Grid>
         </Stack>
       </Box>
     </Box>
