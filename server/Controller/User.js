@@ -1,9 +1,22 @@
 const User = require("../model/User");
 
 const createUser = async (req, res, next) => {
-  try {
-    const newUser = await new User(req.body).save();
+  let exitingUser;
 
+  const { email, username, password } = req.body;
+
+  try {
+    exitingUser = await User.findOne({ email: email });
+  } catch (error) {
+    next(error);
+  }
+
+  if (exitingUser) {
+    return next(new Error("User exits alredy, please login instead"));
+  }
+
+  try {
+    const newUser = await new User(username, email, password).save();
     res.status(201).json({
       message: "Succes",
       data: newUser,
