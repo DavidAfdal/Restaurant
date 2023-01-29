@@ -16,7 +16,7 @@ const createUser = async (req, res, next) => {
   }
 
   try {
-    const newUser = await new User(email, username, password).save();
+    const newUser = await new User({ email, username, password }).save();
     res.status(201).json({
       message: "Succes",
       data: newUser,
