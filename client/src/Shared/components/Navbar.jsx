@@ -72,7 +72,7 @@ const Navbar = () => {
   };
 
   const cartItem = async () => {
-    if (auth.userId !== null || auth.userId !== undefined) {
+    if (auth.userId != null || auth.userId != undefined) {
       try {
         const cart = await axios.get(`http://localhost:3000/cart/${auth?.userId}`);
         setItemCart(cart?.data?.data?.food?.length);
