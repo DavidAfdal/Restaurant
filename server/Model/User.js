@@ -24,6 +24,10 @@ const UserSchema = new mongoose.Schema(
         status: { type: String, default: "none" },
       },
     ],
+    isActived: {
+      type: Boolean,
+      default: false,
+    }
   },
   { timestamps: true }
 );
