@@ -28,6 +28,7 @@ const LoginItem = () => {
     borderRadius: "5px",
     display: "flex",
     justifyContent: "center",
+    flexDirection: "column",
     alignItems: "center",
     p: 4,
   };
