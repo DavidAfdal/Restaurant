@@ -6,7 +6,6 @@ const createUser = async (req, res, next) => {
   const { email, username, password } = req.body;
   try {
     const exitingUser = await User.find({ email: email });
-    console.log(exitingUser);
     if (exitingUser.length == 0) {
       try {
         let salt = bcrypt.genSaltSync(10);
@@ -32,7 +31,7 @@ const createUser = async (req, res, next) => {
           from: "bagastester46@gmail.com",
           to: req.body.email,
           subject: "Test mail",
-          html: `<p>Click <a href="http://localhost:3000/user/activate/${newUser._id}">here</a> to active your email</p>`,
+          html: `<p>Click <a href="http://localhost:3000/user/actived/${newUser._id}">here</a> to active your email</p>`,
         };
 
         await mailTransporter.sendMail(mailDetails, function (err, data, next) {
@@ -54,9 +53,15 @@ const createUser = async (req, res, next) => {
         next(err);
       }
     } else {
-      return res.status(201).json({
-        message: "Succes",
-        data: "User exits alredy, please login instead",
+      if (exitingUser.isActived === false) {
+        return res.status(200).json({
+          message: "User exits alredy, but not activated",
+          data: [],
+        });
+      }
+      return res.status(200).json({
+        message: "User exits alredy, please login instead",
+        data: [],
       });
     }
   } catch (err) {
@@ -67,6 +72,9 @@ const createUser = async (req, res, next) => {
 const activeUser = async (req, res, next) => {
   try {
     const findUser = await User.findByIdAndUpdate(req.params.id, { isActived: true }, { new: true });
+    res.status(200).json({
+      message: "your email already active",
+    });
   } catch (err) {
     next(err);
   }
@@ -77,15 +85,35 @@ const userLogin = async (req, res, next) => {
   try {
     const identifiedUser = await User.findOne({ email: email });
     if (!identifiedUser) {
-      res.status(200).json({
+      return res.status(200).json({
         message: "Email doesn`t existing",
       });
     }
     const comparePassword = await bcrypt.compare(password, identifiedUser.password);
     if (comparePassword) {
       if (identifiedUser.isActived === false) {
-        res.status(201).json({
-          message: "Please Actived ur Account",
+        let mailTransporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: "bagastester46@gmail.com",
+            pass: "nhvrhffzwrdxicqe",
+          },
+        });
+
+        let mailDetails = {
+          from: "bagastester46@gmail.com",
+          to: req.body.email,
+          subject: "Reactive Email",
+          html: `<p>Click <a href="http://localhost:3000/user/actived/${identifiedUser._id}">here</a> to active your email</p>`,
+        };
+        await mailTransporter.sendMail(mailDetails, function (err, data, next) {
+          if (err) {
+            next(err);
+          } else {
+            res.status(202).json({
+              message: "Please Check Your email to activated Account",
+            });
+          }
         });
       } else {
         const { username, email, _id, ...otherDetails } = identifiedUser._doc;
@@ -108,4 +136,4 @@ const userLogin = async (req, res, next) => {
   }
 };
 
-module.exports = { createUser, userLogin };
+module.exports = { createUser, userLogin, activeUser };
