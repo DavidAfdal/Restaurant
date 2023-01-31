@@ -5,8 +5,8 @@ const bcrypt = require("bcrypt");
 const createUser = async (req, res, next) => {
   const { email, username, password } = req.body;
   try {
-    const exitingUser = await User.find({ email: email });
-    if (exitingUser.length == 0) {
+    const exitingUser = await User.findOne({ email: email });
+    if (!exitingUser) {
       try {
         let salt = bcrypt.genSaltSync(10);
         let hash = bcrypt.hashSync(password, salt);
@@ -55,14 +55,15 @@ const createUser = async (req, res, next) => {
     } else {
       if (exitingUser.isActived === false) {
         return res.status(200).json({
-          message: "User exits alredy, but not activated",
+          error: "User exits alredy, but not activated",
+          data: [],
+        });
+      } else {
+        return res.status(200).json({
+          error: "User exits alredy, please login instead",
           data: [],
         });
       }
-      return res.status(200).json({
-        message: "User exits alredy, please login instead",
-        data: [],
-      });
     }
   } catch (err) {
     next(err);
@@ -86,7 +87,7 @@ const userLogin = async (req, res, next) => {
     const identifiedUser = await User.findOne({ email: email });
     if (!identifiedUser) {
       return res.status(200).json({
-        message: "Email doesn`t existing",
+        error: "Email doesn`t existing",
       });
     }
     const comparePassword = await bcrypt.compare(password, identifiedUser.password);
@@ -106,12 +107,13 @@ const userLogin = async (req, res, next) => {
           subject: "Reactive Email",
           html: `<p>Click <a href="http://localhost:3000/user/actived/${identifiedUser._id}">here</a> to active your email</p>`,
         };
+
         await mailTransporter.sendMail(mailDetails, function (err, data, next) {
           if (err) {
             next(err);
           } else {
             res.status(202).json({
-              message: "Please Check Your email to activated Account",
+              error: "Please Check Your email to activated Account",
             });
           }
         });

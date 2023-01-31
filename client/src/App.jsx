@@ -26,34 +26,34 @@ function App() {
   const login = useCallback((uId) => {
     setIsLogin(true);
     setUserId(uId);
-    localStorage.setItem("userData", JSON.stringify({ userId: uId }));
+    sessionStorage.setItem("userData", JSON.stringify({ userId: uId }));
   }, []);
 
   const logout = useCallback(() => {
     setIsLogin(false);
     setUserId(null);
-    localStorage.removeItem("userData");
+    sessionStorage.removeItem("userData");
   }, []);
 
   const adminLogin = useCallback(() => {
-    localStorage.setItem("admin", JSON.stringify({ name: "admin", password: "admin" }));
+    sessionStorage.setItem("admin", JSON.stringify({ name: "admin", password: "admin" }));
     SetIsAdmin(true);
   }, []);
 
   const adminLogout = () => {
-    localStorage.removeItem("admin");
+    sessionStorage.removeItem("admin");
     SetIsAdmin(false);
   };
 
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("userData"));
+    const storedData = JSON.parse(sessionStorage.getItem("userData"));
     if (storedData) {
       login(storedData.userId);
     }
   }, [login]);
 
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("admin"));
+    const storedData = JSON.parse(sessionStorage.getItem("admin"));
     if (storedData) {
       adminLogin();
     }

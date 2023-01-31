@@ -5,19 +5,32 @@ import LockPersonOutlinedIcon from "@mui/icons-material/LockPersonOutlined";
 import { useContext } from "react";
 import { AuthContext } from "../../Shared/context/auth-context";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const LoginItem = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
     if (email === "admin" && password === "admin") {
       auth.adminLogin();
       navigate("/");
     } else {
-      print("is Not Admin");
+      const data = {
+        email: email,
+        password: password,
+      };
+
+      try {
+        const user = await axios.post("http://localhost:3000/user/login", data);
+        console.log(user);
+        auth.login(user.data.data._id);
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   return (
