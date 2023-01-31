@@ -9,6 +9,7 @@ const foodRouter = require("./routes/food");
 const reviewRouter = require("./routes/review");
 const shippingRouter = require("./routes/shipping");
 const discRouter = require("./routes/discount");
+const PORT = process.env.PORT || 3000
 const cors = require("cors");
 
 const app = express();
@@ -52,7 +53,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   connect();
   console.log("connect to backend");
 });

@@ -2,7 +2,7 @@ const Food = require("../Model/Food");
 const cloudinary = require("../util/cloudinary");
 
 const createFood = async (req, res, next) => {
-  let images = [...req.files];
+  let images = req.files;
   let uploadImage = [];
   try {
     const existFood = await Food.find({ name: req.body.name });
@@ -24,7 +24,6 @@ const createFood = async (req, res, next) => {
         review: req.body.review,
         photos: uploadImage,
       });
-      console.log(newFood);
       try {
         const saveFood = await newFood.save();
         res.status(200).json({
@@ -68,10 +67,7 @@ const filterFood = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-
   category === "All" ? (category = newcategory) : (category = req.query.category.split(","));
-
-  console.log(category);
   try {
     const findedFood = await Food.find({
       category: { $in: category },
