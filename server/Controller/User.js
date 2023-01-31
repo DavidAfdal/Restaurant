@@ -130,7 +130,7 @@ const userLogin = async (req, res, next) => {
       }
     } else {
       res.status(200).json({
-        message: "Please password doesn`t match",
+        error: "Please password doesn`t match",
       });
     }
   } catch (err) {
