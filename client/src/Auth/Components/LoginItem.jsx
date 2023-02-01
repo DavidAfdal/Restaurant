@@ -24,7 +24,7 @@ const LoginItem = () => {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 400,
-    bgcolor: "background.paper",
+    bgcolor: "#fff",
     border: "2px solid red",
     boxShadow: 24,
     borderRadius: "5px",
@@ -32,7 +32,7 @@ const LoginItem = () => {
     justifyContent: "center",
     flexDirection: "column",
     alignItems: "center",
-    p: 5,
+    p: 7,
   };
 
   const handleClose = () => {
@@ -55,6 +55,8 @@ const LoginItem = () => {
         const user = await axios.post("http://localhost:3000/user/login", data);
         console.log(user);
         if (user.data.error) {
+          setEmail("");
+          setPassword("");
           setOpen(true);
           setError(user.data.error);
         } else {
@@ -62,7 +64,10 @@ const LoginItem = () => {
           navigate("/");
         }
       } catch (error) {
-        console.log(error);
+        setEmail("");
+        setPassword("");
+        setOpen(true);
+        setError(error.message);
       }
       setIsLoading(false);
     }

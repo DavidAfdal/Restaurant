@@ -32,7 +32,7 @@ const RegisterItem = () => {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 400,
-    bgcolor: "background.paper",
+    bgcolor: "#fff",
     border: "2px solid red",
     boxShadow: 24,
     borderRadius: "5px",
@@ -65,6 +65,9 @@ const RegisterItem = () => {
       }
       setIsLoading(false);
     } catch (error) {
+      setEmail("");
+      setPassword("");
+      setName("");
       setOpen(true);
       setError(error.message);
       setIsLoading(false);
