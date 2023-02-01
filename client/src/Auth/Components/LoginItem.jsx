@@ -37,6 +37,8 @@ const LoginItem = () => {
 
   const handleClose = () => {
     setOpen(false);
+    setEmail("");
+    setPassword("");
   };
 
   const handleClick = async (e) => {
@@ -55,8 +57,6 @@ const LoginItem = () => {
         const user = await axios.post("http://localhost:3000/user/login", data);
         console.log(user);
         if (user.data.error) {
-          setEmail("");
-          setPassword("");
           setOpen(true);
           setError(user.data.error);
         } else {
@@ -64,8 +64,6 @@ const LoginItem = () => {
           navigate("/");
         }
       } catch (error) {
-        setEmail("");
-        setPassword("");
         setOpen(true);
         setError(error.message);
       }
