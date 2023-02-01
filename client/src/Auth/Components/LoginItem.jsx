@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Card, CardContent, Container, Divider, InputAdornment, TextField, Typography, CircularProgress, Modal } from "@mui/material";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LockPersonOutlinedIcon from "@mui/icons-material/LockPersonOutlined";
@@ -6,12 +6,14 @@ import { useContext } from "react";
 import { AuthContext } from "../../Shared/context/auth-context";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 
 const LoginItem = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [disabled, setDisabled] = useState(true);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
@@ -23,14 +25,14 @@ const LoginItem = () => {
     transform: "translate(-50%, -50%)",
     width: 400,
     bgcolor: "background.paper",
-    border: "2px solid #ff9f0d",
+    border: "2px solid red",
     boxShadow: 24,
     borderRadius: "5px",
     display: "flex",
     justifyContent: "center",
     flexDirection: "column",
     alignItems: "center",
-    p: 4,
+    p: 5,
   };
 
   const handleClose = () => {
@@ -65,6 +67,15 @@ const LoginItem = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (email.trim() != "" && password.trim() != "") {
+      setDisabled(false);
+    } else if (email.length <= 1 || password.length <= 1) {
+      setDisabled(true);
+    }
+  }, [email, password]);
+
   return isLoading ? (
     <Container maxWidth="lg" sx={{ py: "250px", height: "100vh" }}>
       <Box component="div" sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}>
@@ -75,7 +86,8 @@ const LoginItem = () => {
     <>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
-          <Typography variant="h6" component="h2" sx={{ color: "#232323" }}>
+          <ErrorOutlineOutlinedIcon sx={{ color: "red", mb: 1 }} fontSize="large" />
+          <Typography variant="h6" component="h2" sx={{ color: "#232323", textAlign: "center" }}>
             {error}
           </Typography>
         </Box>
@@ -114,7 +126,7 @@ const LoginItem = () => {
                   }}
                 />
 
-                <Button variant="contained" type="submit" sx={{ width: "100%", height: "100%", borderRadius: "0 4px 4px 0", bgcolor: "#ff9f0d", "&:hover": { bgcolor: "#ff9f0d", boxShadow: "none" }, boxShadow: "none" }}>
+                <Button variant="contained" type="submit" sx={{ width: "100%", height: "100%", borderRadius: "0 4px 4px 0", bgcolor: "#ff9f0d", "&:hover": { bgcolor: "#ff9f0d", boxShadow: "none" }, boxShadow: "none" }} disabled={disabled}>
                   Submit
                 </Button>
               </form>
