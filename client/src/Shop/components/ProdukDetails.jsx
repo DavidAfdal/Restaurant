@@ -93,7 +93,7 @@ const ProdukDetails = ({ menu, onNext, onPrev, recomend, loading }) => {
             </Box>
           </Grid>
           <Grid item lg={9} xs={10}>
-            <img src={menu?.photos[thumbid]?.url} width="100%" height="auto" />
+            <img src={menu?.photos[thumbid]?.url} width="100%" height="auto" style={{ aspectRatio: 4 / 3 }} />
           </Grid>
         </Grid>
         <Grid item lg={5} xs={12}>

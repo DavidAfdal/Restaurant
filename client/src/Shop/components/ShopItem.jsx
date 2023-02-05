@@ -162,7 +162,7 @@ const ShopItem = () => {
                 </Box>
               ) : (
                 <Box sx={{ display: "flex", flexDirection: "column", gap: "5px", cursor: "pointer" }} onClick={() => handleClick(menu._id)}>
-                  <img src={menu.photos[0].url} alt={menu.name} width="100%" height="100%" />
+                  <img src={menu.photos[0].url} alt={menu.name} style={{ aspectRatio: 3 / 2, width: "100%", height: "100%" }} />
                   <Typography variant="p" sx={{ color: "#232323", fontSize: "18px" }}>
                     {menu.name}
                   </Typography>

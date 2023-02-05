@@ -9,12 +9,15 @@ import axios from "axios";
 import { AuthContext } from "../../Shared/context/auth-context";
 import { useLocation, useNavigate } from "react-router-dom";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
 
 const RegisterItem = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [verif, setVerif] = useState(false);
   const [error, setError] = useState("");
+  const [verifMessage, setVerifMessage] = useState("");
   const { pathname } = useLocation();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -26,7 +29,7 @@ const RegisterItem = () => {
     setOpen(false);
   };
 
-  const style = {
+  const errorstyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -40,7 +43,24 @@ const RegisterItem = () => {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    p: 5,
+    p: 7,
+  };
+
+  const verifstyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "#fff",
+    border: "2px solid green",
+    boxShadow: 24,
+    borderRadius: "5px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    p: 7,
   };
 
   const handelSubmit = async (e) => {
@@ -61,7 +81,8 @@ const RegisterItem = () => {
         setOpen(true);
         setError(user.data.error);
       } else {
-        navigate("/Login", { state: { prevPath: pathname } });
+        setVerif(true);
+        setVerifMessage(user.data.message);
       }
       setIsLoading(false);
     } catch (error) {
@@ -72,6 +93,11 @@ const RegisterItem = () => {
       setError(error.message);
       setIsLoading(false);
     }
+  };
+
+  const handelVerifClose = () => {
+    setVerif(false);
+    navigate("/Login", { state: { prevPath: pathname } });
   };
 
   useEffect(() => {
@@ -91,13 +117,23 @@ const RegisterItem = () => {
   ) : (
     <>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-        <Box sx={style}>
-          <ErrorOutlineOutlinedIcon sx={{ color: "red", mb: 1 }} fontSize="large" />
+        <Box sx={errorstyle}>
+          <ErrorOutlineOutlinedIcon sx={{ color: "red", mb: 1, fontSize: "4rem" }} />
           <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ color: "#232323" }}>
             {error}
           </Typography>
         </Box>
       </Modal>
+
+      <Modal open={verif} onClose={handelVerifClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+        <Box sx={verifstyle}>
+          <VerifiedOutlinedIcon sx={{ color: "green", mb: 1, fontSize: "4rem" }} />
+          <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ color: "#232323", textAlign: "center" }}>
+            {verifMessage}
+          </Typography>
+        </Box>
+      </Modal>
+
       <Container maxWidth="lg" sx={{ py: "100px", height: "100%" }}>
         <Box component="div" sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}>
           <Card sx={{ width: "350px" }}>

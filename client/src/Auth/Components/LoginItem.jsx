@@ -7,6 +7,7 @@ import { AuthContext } from "../../Shared/context/auth-context";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
 
 const LoginItem = () => {
   const auth = useContext(AuthContext);
@@ -18,7 +19,7 @@ const LoginItem = () => {
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
 
-  const style = {
+  const errorstyle = {
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -88,8 +89,8 @@ const LoginItem = () => {
   ) : (
     <>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-        <Box sx={style}>
-          <ErrorOutlineOutlinedIcon sx={{ color: "red", mb: 1 }} fontSize="large" />
+        <Box sx={errorstyle}>
+          <ErrorOutlineOutlinedIcon sx={{ color: "red", mb: 1, fontSize: "4rem" }} />
           <Typography variant="h6" component="h2" sx={{ color: "#232323", textAlign: "center" }}>
             {error}
           </Typography>
