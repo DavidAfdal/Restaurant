@@ -1,6 +1,6 @@
-const User = require("../model/User");
-const nodemailer = require("nodemailer");
-const bcrypt = require("bcrypt");
+const User = require('../Model/User');
+const nodemailer = require('nodemailer');
+const bcrypt = require('bcrypt');
 
 const createUser = async (req, res, next) => {
   const { email, username, password } = req.body;
@@ -20,17 +20,17 @@ const createUser = async (req, res, next) => {
 
         //sendemail
         let mailTransporter = nodemailer.createTransport({
-          service: "gmail",
+          service: 'gmail',
           auth: {
-            user: "bagastester46@gmail.com",
-            pass: "nhvrhffzwrdxicqe",
+            user: 'bagastester46@gmail.com',
+            pass: 'nhvrhffzwrdxicqe',
           },
         });
 
         let mailDetails = {
-          from: "bagastester46@gmail.com",
+          from: 'bagastester46@gmail.com',
           to: req.body.email,
-          subject: "Test mail",
+          subject: 'Test mail',
           html: `<p>Click <a href="http://localhost:3000/user/actived/${newUser._id}">here</a> to active your email</p>`,
         };
 
@@ -40,7 +40,7 @@ const createUser = async (req, res, next) => {
           } else {
             const { username, email, _id, ...otherDetails } = newUser._doc;
             res.status(200).json({
-              message: "Please Check Your email to activated Account",
+              message: 'Please Check Your email to activated Account',
               data: {
                 _id: _id,
                 username: username,
@@ -55,12 +55,12 @@ const createUser = async (req, res, next) => {
     } else {
       if (exitingUser.isActived === false) {
         return res.status(200).json({
-          error: "User exits alredy, but not activated",
+          error: 'User exits alredy, but not activated',
           data: [],
         });
       } else {
         return res.status(200).json({
-          error: "User exits alredy, please login instead",
+          error: 'User exits alredy, please login instead',
           data: [],
         });
       }
@@ -73,8 +73,8 @@ const createUser = async (req, res, next) => {
 const activeUser = async (req, res, next) => {
   try {
     const findUser = await User.findByIdAndUpdate(req.params.id, { isActived: true }, { new: true });
-    res.status(200).json({
-      message: "your email already active",
+    res.status(200).redirect('http://127.0.0.1:3006/active').json({
+      message: 'your email already active',
     });
   } catch (err) {
     next(err);
@@ -87,24 +87,24 @@ const userLogin = async (req, res, next) => {
     const identifiedUser = await User.findOne({ email: email });
     if (!identifiedUser) {
       return res.status(200).json({
-        error: "Email doesn`t existing",
+        error: 'Email doesn`t existing',
       });
     }
     const comparePassword = await bcrypt.compare(password, identifiedUser.password);
     if (comparePassword) {
       if (identifiedUser.isActived === false) {
         let mailTransporter = nodemailer.createTransport({
-          service: "gmail",
+          service: 'gmail',
           auth: {
-            user: "bagastester46@gmail.com",
-            pass: "nhvrhffzwrdxicqe",
+            user: 'bagastester46@gmail.com',
+            pass: 'nhvrhffzwrdxicqe',
           },
         });
 
         let mailDetails = {
-          from: "bagastester46@gmail.com",
+          from: 'bagastester46@gmail.com',
           to: req.body.email,
-          subject: "Reactive Email",
+          subject: 'Reactive Email',
           html: `<p>Click <a href="http://localhost:3000/user/actived/${identifiedUser._id}">here</a> to active your email</p>`,
         };
 
@@ -113,14 +113,14 @@ const userLogin = async (req, res, next) => {
             next(err);
           } else {
             res.status(202).json({
-              error: "Please Check Your email to activated Account",
+              error: 'Please Check Your email to activated Account',
             });
           }
         });
       } else {
         const { username, email, _id, ...otherDetails } = identifiedUser._doc;
         res.status(200).json({
-          message: "Succes Login",
+          message: 'Succes Login',
           data: {
             _id: _id,
             username: username,
@@ -130,7 +130,7 @@ const userLogin = async (req, res, next) => {
       }
     } else {
       res.status(200).json({
-        error: "Please password doesn`t match",
+        error: 'Please password doesn`t match',
       });
     }
   } catch (err) {

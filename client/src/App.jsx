@@ -17,6 +17,7 @@ import Footer from "./Shared/components/Footer.jsx";
 import AdminPage from "./Admin/page/AdminPage.jsx";
 import AddFoodPage from "./Admin/page/AddFoodPage.jsx";
 import AddDiscountPage from "./Admin/page/AddDiscountPage.jsx";
+import PopUp from "./Shared/ActiveUser.jsx";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -68,6 +69,7 @@ function App() {
         <Route path="/chef" element={<Chef />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/active" element={<PopUp />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/payments" element={<CheckOut />} />
         <Route path="/menu/:menuId" element={<Produk />} />

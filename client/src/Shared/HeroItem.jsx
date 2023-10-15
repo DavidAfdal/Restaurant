@@ -9,6 +9,7 @@ const HeroItem = ({ title, to }) => {
   const { state } = useLocation();
   let pathPrev = state?.prevPath;
   let from = pathPrev === "/" ? "Home" : pathPrev.split("/")[1];
+
   return (
     <div className="bg_hetoItem">
       <Container maxWidth="lg" sx={{ py: "100px" }}>
